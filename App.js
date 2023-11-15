@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { Button, Dimensions, FlatList, Pressable, StyleSheet, Text, View, Image, TextInput, Animated } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import * as Svg from "react-native-svg";
-import Logo from "./assets/Logo.svg";
+import Logo from "./assets/robust-logo";
 import SearchIcon from "./assets/icon-search.svg";
 import styles from "./styles";
 import dummyData from "./dummy-data.js";
@@ -11,7 +11,7 @@ export default function App() {
   const [searchMode, setSearchMode] = useState(true); // true = search, false = translate
   return (
     <View style={styles.container}>
-      <Logo width={"100%"} />
+      <Logo width={Dimensions.get("window").width} />
       <StatusBar style="auto" />
       <ToggleMode setSearchMode={setSearchMode} searchMode={searchMode} />
       {searchMode && <SearchScreen />}
@@ -34,10 +34,19 @@ function ModeMarker({ searchMode }) {
     borderRadius: 50,
     top: 0,
     left: 0,
+    //shadow
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    //elevation: 5, // for Android
   };
   const markerAnimation = Animated.timing(markerPosition, {
     toValue: searchMode ? 0 : markerWidth,
-    duration: 100,
+    duration: 200,
     useNativeDriver: true,
   });
   useEffect(() => {
@@ -49,16 +58,19 @@ function ModeMarker({ searchMode }) {
 }
 
 function SearchScreen() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(dummyData);
   return (
     <View >
       <FlatList
         ListHeaderComponent={
-          <SearchBox setData={setData} />
+          <View>
+            <SearchBox setData={setData} />
+            <Text style={styles.resultText}> {data.length} Resultat</Text>
+          </View>
         }
         data={data}
         renderItem={({ item }) =>
-          <Faceplate model={item.model} blueprintUrl={item.blueprintUrl} />
+          <Faceplate model={item.modell} blueprintUrl={item.URL} style={styles.faceplate} />
         }
       />
     </View>
@@ -142,20 +154,10 @@ function ToggleMode({ setSearchMode, searchMode }) {
 }
 
 function Divider() {
-  return (
-    <View
-      style={styles.divider}
-    />
-  );
+  return (<View style={styles.divider} />);
 }
 
 function BottomBar() {
-  return (
-    <View
-      style={styles.bottomBar}
-    />
-
-
-  );
+  return (<View style={styles.bottomBar} />);
 }
 

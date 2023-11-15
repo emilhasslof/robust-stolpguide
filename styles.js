@@ -12,8 +12,7 @@ const colors = {
 
 const styles = StyleSheet.create({
     container: {
-        top: 32,
-        flex: 1,
+        height: "100%",
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "top",
@@ -55,16 +54,24 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 0,
         width: Dimensions.get("window").width,
-        height: "5%",
+        height: 10,
         backgroundColor: colors.darkBlue,
     },
     faceplate: {
+        borderColor: colors.faceplateBorder,
+        borderWidth: 2,
+        borderRadius: 10,
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        width: "100%",
-        height: "80%",
+        height: Dimensions.get("window").height / 1.2,
+        width: "90%",
+        padding: 20,
+        alignSelf: "center",
+        marginBottom: 30,
     },
     model: {
+        marginTop: 20,
         color: "black",
         fontSize: 35,
     },
@@ -88,7 +95,14 @@ const styles = StyleSheet.create({
         padding: 5,
         marginHorizontal: '4%',
         marginVertical: '2%',
-    }
+    },
+    resultText: {
+        textAlign: "center",
+        fontSize: 40,
+        fontWeight: "200",
+        margin: 10,
+        marginBottom: 30,
+    },
 
 });
 
