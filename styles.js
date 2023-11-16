@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5, // for Android    
-        margin: 10,
         backgroundColor: colors.toggleBackground,
+        marginBottom: 10,
     },
     sök: {
         textAlign: "center",
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         width: "90%",
         padding: 20,
         alignSelf: "center",
-        marginBottom: 30,
+        margin: 15,
     },
     model: {
         marginTop: 20,

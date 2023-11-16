@@ -9,13 +9,29 @@ import dummyData from "./dummy-data.js";
 
 export default function App() {
   const [searchMode, setSearchMode] = useState(true); // true = search, false = translate
-  return (
-    <View style={styles.container}>
-      <Logo width={Dimensions.get("window").width} />
+  const [data, setData] = useState(dummyData);
+
+  const renderHeader = (searchMode) => {
+    return (
+    <View>
       <StatusBar style="auto" />
-      <ToggleMode setSearchMode={setSearchMode} searchMode={searchMode} />
-      {searchMode && <SearchScreen />}
-      {!searchMode && <TranslateScreen />}
+      <Logo width={Dimensions.get("window").width} />
+      <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
+      {searchMode && <SearchBox data={data} setData={setData} />}
+      {!searchMode && <TranslateInputBox />} 
+    </View>
+    )
+  }
+
+  return (
+    <View >
+      <FlatList
+        ListHeaderComponent={renderHeader(searchMode)}
+        data={data}
+        renderItem={({ item }) =>
+          <Faceplate model={item.modell} blueprintUrl={item.URL} style={styles.faceplate} />
+        }
+      />
       <BottomBar />
     </View>
   );
@@ -57,29 +73,9 @@ function ModeMarker({ searchMode }) {
   );
 }
 
-function SearchScreen() {
-  const [data, setData] = useState(dummyData);
-  return (
-    <View >
-      <FlatList
-        ListHeaderComponent={
-          <View>
-            <SearchBox setData={setData} />
-            <Text style={styles.resultText}> {data.length} Resultat</Text>
-          </View>
-        }
-        data={data}
-        renderItem={({ item }) =>
-          <Faceplate model={item.modell} blueprintUrl={item.URL} style={styles.faceplate} />
-        }
-      />
-    </View>
-  );
-}
-
 // Renders input fields for search parameters and updates 
 // data array with search results
-function SearchBox({ setData }) {
+function SearchBox({ data, setData }) {
   const [höjd, setHöjd] = useState("");
   const [bredd, setBredd] = useState("");
   const [elslutbleck, setElslutbleck] = useState("");
@@ -87,9 +83,21 @@ function SearchBox({ setData }) {
   const [modell, setModell] = useState("");
   const [plösmått, setPlösmått] = useState("");
 
-  const search = () => {
+  useEffect(() => {
+    const filteredData = dummyData.filter(item => {
+      return (
+        item.höjd.includes(höjd) &&
+        item.bredd.includes(bredd) &&
+        item.elslutbleck.includes(elslutbleck) &&
+        item.karmprofil.includes(karmprofil) &&
+        item.modell.includes(modell) &&
+        item.plösmått.includes(plösmått)
+      )})
 
-  }
+    setData(filteredData);
+
+  }, [höjd, bredd, elslutbleck, karmprofil, modell, plösmått]);
+
   const inputFields = [
     { name: 'höjd', setter: setHöjd, placeholder: 'Höjd', numeric: true },
     { name: 'bredd', setter: setBredd, placeholder: 'Bredd', numeric: true },
@@ -121,11 +129,11 @@ function SearchBox({ setData }) {
   );
 }
 
-function TranslateScreen() {
-  return (
+function TranslateInputBox() {
+  return ( 
     <View>
       <Text>Translating</Text>
-    </View>
+      </View>
   );
 }
 
