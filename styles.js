@@ -85,6 +85,12 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         justifyContent: "space-between",
     },
+    translateInputBox: {
+        backgroundColor: colors.searchFieldBackground,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+    },
     input: {
         backgroundColor: "white",
         flexDirection: "row",
@@ -102,6 +108,14 @@ const styles = StyleSheet.create({
         fontWeight: "200",
         margin: 10,
         marginBottom: 30,
+    },
+    manufacturer: {
+        textAlign: "left",
+        textAlignVertical: "center",
+        width: "40%",
+        fontSize: 25,
+        fontWeight: "300",
+        marginLeft: "4%",
     },
 
 });

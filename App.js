@@ -13,13 +13,14 @@ export default function App() {
 
   const renderHeader = (searchMode) => {
     return (
-    <View>
-      <StatusBar style="auto" />
-      <Logo width={Dimensions.get("window").width} />
-      <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
-      {searchMode && <SearchBox data={data} setData={setData} />}
-      {!searchMode && <TranslateInputBox />} 
-    </View>
+      <View>
+        <StatusBar style="auto" />
+        <Logo width={Dimensions.get("window").width} />
+        <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
+        {searchMode && <SearchBox data={data} setData={setData} />}
+        {!searchMode && <TranslateInputBox setData={setData} />}
+        <Text style={styles.resultText}>{data.length} Resultat</Text>
+      </View>
     )
   }
 
@@ -34,6 +35,129 @@ export default function App() {
       />
       <BottomBar />
     </View>
+  );
+}
+
+
+// Renders input fields for search parameters and updates 
+// data array with search results
+function SearchBox({ setData }) {
+  const [höjd, setHöjd] = useState("")
+  const [bredd, setBredd] = useState("")
+  const [elslutbleck, setElslutbleck] = useState("")
+  const [karmprofil, setKarmprofil] = useState("")
+  const [modell, setModell] = useState("")
+  const [plösmått, setPlösmått] = useState("")
+
+  useEffect(() => {
+    const filteredData = dummyData.filter(plate => {
+      return (
+        plate.höjd.includes(höjd) &&
+        plate.bredd.includes(bredd) &&
+        plate.elslutbleck.toLowerCase().includes(elslutbleck.toLowerCase()) &&
+        plate.karmprofil.toLowerCase().includes(karmprofil.toLowerCase()) &&
+        plate.modell.toLowerCase().includes(modell.toLowerCase()) &&
+        plate.plösmått.includes(plösmått)
+      )
+    })
+
+    setData(filteredData)
+
+  }, [höjd, bredd, elslutbleck, karmprofil, modell, plösmått]);
+
+  const inputFields = [
+    { name: 'höjd', setter: setHöjd, placeholder: 'Höjd', numeric: true },
+    { name: 'bredd', setter: setBredd, placeholder: 'Bredd', numeric: true },
+    { name: 'elslutbleck', setter: setElslutbleck, placeholder: 'Elslutbleck', numeric: false },
+    { name: 'karmprofil', setter: setKarmprofil, placeholder: 'Karmprofil', numeric: false },
+    { name: 'modell', setter: setModell, placeholder: 'Modell', numeric: false },
+    { name: 'plösmått', setter: setPlösmått, placeholder: 'Plösmått', numeric: true },
+  ];
+
+  return (
+    <View>
+      <Divider />
+      <View style={styles.searchBox}>
+        {inputFields.map((field, index) => (
+          <View style={styles.input} key={index}>
+            <Image source={require('./assets/icon-search.png')} />
+            {/*<SearchIcon width={20} height={20} />*/}
+            <TextInput
+              keyboardType={field.numeric ? 'numeric' : 'default'}
+              onChangeText={field.setter}
+              //value={field.name}
+              placeholder={field.placeholder}
+            />
+          </View>
+        ))}
+      </View>
+      <Divider />
+    </View>
+  );
+}
+
+function TranslateInputBox({ setData }) {
+  const [assa, setAssa] = useState("")
+  const [step, setStep] = useState("")
+  const [safetron, setSafetron] = useState("")
+
+  useEffect(() => {
+    const filteredData = dummyData.filter(plate => {
+      return (
+        plate.ASSA.map(s => s.toLowerCase()).some((item) => { return item.includes(assa.toLowerCase()) }) &&
+        plate.Step.map(s => s.toLowerCase()).some((item) => { return item.includes(step.toLowerCase()) }) &&
+        plate.Safetron.map(s => s.toLowerCase()).some((item) => { return item.includes(safetron.toLowerCase()) })
+      )
+    })
+
+    setData(filteredData)
+
+  }, [assa, step, safetron])
+
+  return (
+    <View style={styles.translateInputBox}>
+      <Divider />
+      <Text style={styles.manufacturer}>ASSA</Text>
+      <View style={[styles.input, { width: "48%" }]}>
+        <Image source={require('./assets/icon-search.png')} />
+        <TextInput onChangeText={setAssa} style={{ width: "100%" }} />
+      </View>
+      <Text style={styles.manufacturer}>Safetron</Text>
+      <View style={[styles.input, { width: "48%" }]}>
+        <Image source={require('./assets/icon-search.png')} />
+        <TextInput onChangeText={setSafetron} style={{ width: "100%" }} />
+      </View>
+      <Text style={styles.manufacturer}>StepLock</Text>
+      <View style={[styles.input, { width: "48%" }]}>
+        <Image source={require('./assets/icon-search.png')} />
+        <TextInput onChangeText={setStep} style={{ width: "100%" }} />
+      </View>
+      <Divider />
+    </View>
+  );
+}
+
+function Faceplate({ model, blueprintUrl }) {
+  return (
+    <View style={styles.faceplate}>
+      <Text style={styles.model}>{model}</Text>
+      <Image source={{ uri: blueprintUrl }} style={styles.blueprint} />
+    </View>
+  );
+}
+
+function ToggleMode({ setSearchMode, searchMode }) {
+  return (
+    <Pressable
+      style={styles.toggleMode}
+      onPress={() => {
+        setSearchMode(!searchMode);
+      }}
+    >
+      <ModeMarker searchMode={searchMode} />
+      <Text style={[styles.sök, { color: searchMode ? "white" : "black" }]}>Sök</Text>
+      <Text style={[styles.översätt, { color: searchMode ? "black" : "white" }]}>Översätt</Text>
+    </Pressable >
   );
 }
 
@@ -70,94 +194,6 @@ function ModeMarker({ searchMode }) {
   }, [searchMode]);
   return (
     <Animated.View style={[markerStyle, { transform: [{ translateX: markerPosition }] }]} />
-  );
-}
-
-// Renders input fields for search parameters and updates 
-// data array with search results
-function SearchBox({ data, setData }) {
-  const [höjd, setHöjd] = useState("");
-  const [bredd, setBredd] = useState("");
-  const [elslutbleck, setElslutbleck] = useState("");
-  const [karmprofil, setKarmprofil] = useState("");
-  const [modell, setModell] = useState("");
-  const [plösmått, setPlösmått] = useState("");
-
-  useEffect(() => {
-    const filteredData = dummyData.filter(item => {
-      return (
-        item.höjd.includes(höjd) &&
-        item.bredd.includes(bredd) &&
-        item.elslutbleck.includes(elslutbleck) &&
-        item.karmprofil.includes(karmprofil) &&
-        item.modell.includes(modell) &&
-        item.plösmått.includes(plösmått)
-      )})
-
-    setData(filteredData);
-
-  }, [höjd, bredd, elslutbleck, karmprofil, modell, plösmått]);
-
-  const inputFields = [
-    { name: 'höjd', setter: setHöjd, placeholder: 'Höjd', numeric: true },
-    { name: 'bredd', setter: setBredd, placeholder: 'Bredd', numeric: true },
-    { name: 'elslutbleck', setter: setElslutbleck, placeholder: 'Elslutbleck', numeric: false },
-    { name: 'karmprofil', setter: setKarmprofil, placeholder: 'Karmprofil', numeric: false },
-    { name: 'modell', setter: setModell, placeholder: 'Modell', numeric: false },
-    { name: 'plösmått', setter: setPlösmått, placeholder: 'Plösmått', numeric: true },
-  ];
-
-  return (
-    <View>
-      <Divider />
-      <View style={styles.searchBox}>
-        {inputFields.map((field, index) => (
-          <View style={styles.input} key={index}>
-            <Image source={require('./assets/icon-search.png')} />
-            {/*<SearchIcon width={20} height={20} />*/}
-            <TextInput
-              keyboardType={field.numeric ? 'numeric' : 'default'}
-              onChangeText={field.setter}
-              //value={field.name}
-              placeholder={field.placeholder}
-            />
-          </View>
-        ))}
-      </View>
-      <Divider />
-    </View>
-  );
-}
-
-function TranslateInputBox() {
-  return ( 
-    <View>
-      <Text>Translating</Text>
-      </View>
-  );
-}
-
-function Faceplate({ model, blueprintUrl }) {
-  return (
-    <View style={styles.faceplate}>
-      <Text style={styles.model}>{model}</Text>
-      <Image source={{ uri: blueprintUrl }} style={styles.blueprint} />
-    </View>
-  );
-}
-
-function ToggleMode({ setSearchMode, searchMode }) {
-  return (
-    <Pressable
-      style={styles.toggleMode}
-      onPress={() => {
-        setSearchMode(!searchMode);
-      }}
-    >
-      <ModeMarker searchMode={searchMode} />
-      <Text style={[styles.sök, { color: searchMode ? "white" : "black" }]}>Sök</Text>
-      <Text style={[styles.översätt, { color: searchMode ? "black" : "white" }]}>Översätt</Text>
-    </Pressable >
   );
 }
 
