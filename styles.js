@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         width: "40%",
         borderRadius: 20,
         borderWidth: 2,
-        padding: 5,
+        padding: 8,
         marginHorizontal: '4%',
         marginVertical: '2%',
     },
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     manufacturer: {
         textAlign: "left",
         textAlignVertical: "center",
+        justifyContent: "center",
         width: "40%",
         fontSize: 25,
         fontWeight: "300",

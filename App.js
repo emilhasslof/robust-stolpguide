@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, Dimensions, FlatList, Pressable, StyleSheet, Text, View, Image, TextInput, Animated } from "react-native";
+import { Dimensions, FlatList, Pressable, StyleSheet, Text, View, Image, TextInput, Animated } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import * as Svg from "react-native-svg";
 import Logo from "./assets/robust-logo";
@@ -49,6 +49,7 @@ function SearchBox({ setData }) {
   const [modell, setModell] = useState("")
   const [plösmått, setPlösmått] = useState("")
 
+
   useEffect(() => {
     const filteredData = dummyData.filter(plate => {
       return (
@@ -65,6 +66,7 @@ function SearchBox({ setData }) {
 
   }, [höjd, bredd, elslutbleck, karmprofil, modell, plösmått]);
 
+
   const inputFields = [
     { name: 'höjd', setter: setHöjd, placeholder: 'Höjd', numeric: true },
     { name: 'bredd', setter: setBredd, placeholder: 'Bredd', numeric: true },
@@ -74,6 +76,16 @@ function SearchBox({ setData }) {
     { name: 'plösmått', setter: setPlösmått, placeholder: 'Plösmått', numeric: true },
   ];
 
+  // Need a reference for each field to be able to focus it
+  inputFields.forEach(field => {
+    field.ref = React.createRef()
+  })
+
+  // Uses ref to focus the input field when the user clicks on the TouchableOpacity wrapper
+  const focusTextInput = (index) => {
+    inputFields[index].ref.current.focus()
+  }
+
   return (
     <View>
       <Divider />
@@ -82,17 +94,20 @@ function SearchBox({ setData }) {
           <View style={styles.input} key={index}>
             <Image source={require('./assets/icon-search.png')} />
             {/*<SearchIcon width={20} height={20} />*/}
-            <TextInput
-              keyboardType={field.numeric ? 'numeric' : 'default'}
-              onChangeText={field.setter}
-              //value={field.name}
-              placeholder={field.placeholder}
-            />
+            <Pressable onPress={() => focusTextInput(index)}
+              hitSlop={{ top: 20, bottom: 20, left: 50 }} style={{ width: "100%" }}>
+              <TextInput
+                ref={field.ref}
+                keyboardType={field.numeric ? 'numeric' : 'default'}
+                onChangeText={field.setter}
+                placeholder={field.placeholder}
+              />
+            </Pressable>
           </View>
         ))}
       </View>
       <Divider />
-    </View>
+    </View >
   );
 }
 
