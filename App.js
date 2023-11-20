@@ -17,7 +17,7 @@ export default function App() {
         <StatusBar style="auto" />
         <Logo width={Dimensions.get("window").width} />
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
-        {searchMode && <SearchBox data={data} setData={setData} />}
+        {searchMode && <SearchInputBox data={data} setData={setData} />}
         {!searchMode && <TranslateInputBox setData={setData} />}
         <Text style={styles.resultText}>{data.length} Resultat</Text>
       </View>
@@ -42,7 +42,7 @@ export default function App() {
 
 // Renders input fields for search parameters and updates 
 // data array with search results
-function SearchBox({ setData }) {
+function SearchInputBox({ setData }) {
   const [parameters, setParameters] = useState({
     höjd: "",
     bredd: "",
@@ -117,6 +117,10 @@ function SearchBox({ setData }) {
   );
 }
 
+function lowerCase(s) {
+  return s.toLowerCase()
+}
+
 function TranslateInputBox({ setData }) {
   const [assa, setAssa] = useState("")
   const [step, setStep] = useState("")
@@ -125,9 +129,9 @@ function TranslateInputBox({ setData }) {
   useEffect(() => {
     const filteredData = dummyData.filter(plate => {
       return (
-        plate.ASSA.map(s => s.toLowerCase()).some((item) => { return item.includes(assa.toLowerCase()) }) &&
-        plate.Step.map(s => s.toLowerCase()).some((item) => { return item.includes(step.toLowerCase()) }) &&
-        plate.Safetron.map(s => s.toLowerCase()).some((item) => { return item.includes(safetron.toLowerCase()) })
+        plate.ASSA.map(lowerCase).some((item) => { return item.includes(assa.toLowerCase()) }) &&
+        plate.Step.map(lowerCase).some((item) => { return item.includes(step.toLowerCase()) }) &&
+        plate.Safetron.map(lowerCase).some((item) => { return item.includes(safetron.toLowerCase()) })
       )
     })
 

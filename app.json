@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "robust-stolpguide",
-    "slug": "robust-stolpguide",
+    "slug": "stolpguide",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.emilhasslof.stolpguide"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f545ca72-6092-41e9-ad06-347557d4291d"
+      }
+    },
+    "owner": "emilhasslof"
   }
 }

@@ -71,11 +71,12 @@ const styles = StyleSheet.create({
         margin: 15,
     },
     model: {
-        marginTop: 20,
         color: "black",
         fontSize: 35,
     },
     blueprint: {
+        marginTop: -40,
+        marginBottom: -40,
         width: "100%",
         height: "100%",
     },
