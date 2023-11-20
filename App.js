@@ -29,6 +29,7 @@ export default function App() {
       <FlatList
         ListHeaderComponent={renderHeader(searchMode)}
         data={data}
+        keyboardShouldPersistTaps="handled"
         renderItem={({ item }) =>
           <Faceplate model={item.modell} blueprintUrl={item.URL} style={styles.faceplate} />
         }
@@ -42,38 +43,43 @@ export default function App() {
 // Renders input fields for search parameters and updates 
 // data array with search results
 function SearchBox({ setData }) {
-  const [höjd, setHöjd] = useState("")
-  const [bredd, setBredd] = useState("")
-  const [elslutbleck, setElslutbleck] = useState("")
-  const [karmprofil, setKarmprofil] = useState("")
-  const [modell, setModell] = useState("")
-  const [plösmått, setPlösmått] = useState("")
+  const [parameters, setParameters] = useState({
+    höjd: "",
+    bredd: "",
+    elslutbleck: "",
+    karmprofil: "",
+    modell: "",
+    plösmått: "",
+  })
 
+  const setParameter = (key, value) => {
+    setParameters({ ...parameters, [key]: value })
+  }
 
   useEffect(() => {
     const filteredData = dummyData.filter(plate => {
       return (
-        plate.höjd.includes(höjd) &&
-        plate.bredd.includes(bredd) &&
-        plate.elslutbleck.toLowerCase().includes(elslutbleck.toLowerCase()) &&
-        plate.karmprofil.toLowerCase().includes(karmprofil.toLowerCase()) &&
-        plate.modell.toLowerCase().includes(modell.toLowerCase()) &&
-        plate.plösmått.includes(plösmått)
+        plate.höjd.includes(parameters.höjd) &&
+        plate.bredd.includes(parameters.bredd) &&
+        plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
+        plate.karmprofil.toLowerCase().includes(parameters.karmprofil.toLowerCase()) &&
+        plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
+        plate.plösmått.includes(parameters.plösmått)
       )
     })
 
     setData(filteredData)
 
-  }, [höjd, bredd, elslutbleck, karmprofil, modell, plösmått]);
+  }, [parameters]);
 
 
   const inputFields = [
-    { name: 'höjd', setter: setHöjd, placeholder: 'Höjd', numeric: true },
-    { name: 'bredd', setter: setBredd, placeholder: 'Bredd', numeric: true },
-    { name: 'elslutbleck', setter: setElslutbleck, placeholder: 'Elslutbleck', numeric: false },
-    { name: 'karmprofil', setter: setKarmprofil, placeholder: 'Karmprofil', numeric: false },
-    { name: 'modell', setter: setModell, placeholder: 'Modell', numeric: false },
-    { name: 'plösmått', setter: setPlösmått, placeholder: 'Plösmått', numeric: true },
+    { name: 'höjd', numeric: true },
+    { name: 'bredd', numeric: true },
+    { name: 'elslutbleck', numeric: false },
+    { name: 'karmprofil', numeric: false },
+    { name: 'modell', numeric: false },
+    { name: 'plösmått', numeric: true },
   ];
 
   // Need a reference for each field to be able to focus it
@@ -99,8 +105,8 @@ function SearchBox({ setData }) {
               <TextInput
                 ref={field.ref}
                 keyboardType={field.numeric ? 'numeric' : 'default'}
-                onChangeText={field.setter}
-                placeholder={field.placeholder}
+                onChangeText={(text) => setParameter(field.name, text)}
+                placeholder={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
               />
             </Pressable>
           </View>
