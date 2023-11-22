@@ -32,7 +32,7 @@ export default fetchData = async () => {
             safetron: elements[7].textContent.split(','),
             step: elements[8].textContent.split(','),
             //'Ritning-pdf': elements[9]
-            bild: elements[10].childNodes[0].getAttribute('data-thumb')
+            bild: elements[10].childNodes[0].childNodes[0].getAttribute('href')
         })
     }
     return data
