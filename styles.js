@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
         margin: 15,
     },
     model: {
+        paddingTop: 50,
         color: "black",
         fontSize: 35,
     },
     blueprint: {
         marginTop: -40,
-        marginBottom: -40,
-        width: "100%",
         height: "100%",
+        width: "100%",
     },
     searchBox: {
         backgroundColor: colors.searchFieldBackground,
@@ -105,6 +105,13 @@ const styles = StyleSheet.create({
     },
     resultText: {
         textAlign: "center",
+        fontSize: 40,
+        fontWeight: "200",
+        margin: 10,
+        marginBottom: 30,
+    },
+    loadingText: {
+        textAlign: "left",
         fontSize: 40,
         fontWeight: "200",
         margin: 10,

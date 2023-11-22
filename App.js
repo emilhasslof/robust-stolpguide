@@ -12,14 +12,24 @@ export default function App() {
   const [searchMode, setSearchMode] = useState(true); // true = search, false = translate
   const [fetchedData, setFetchedData] = useState([]); // fetched data from robust-se.com
   const [data, setData] = useState([]); // Data displayed in the FlatList, changes when user searches or translates
+  const [fetching, setFetching] = useState(true);
+  const [dots, setDots] = useState('');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots(prev => (prev.length < 3 ? prev + '.' : ''));
+    }, 500); // Adjust the speed as needed
+
+    return () => clearInterval(interval);
+  }, []);
+
 
   useEffect(() => {
     const fetchDataAndSetState = async () => {
-      console.log("Fetching data...")
       const data = await fetchData()
-      console.log("Data lenght: " + data.length)
       setFetchedData(data)
       setData(data)
+      setFetching(false)
     }
     fetchDataAndSetState()
   }, [])
@@ -32,7 +42,8 @@ export default function App() {
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
         {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} />}
         {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} />}
-        <Text style={styles.resultText}>{data.length} Resultat</Text>
+        {fetching && <Text style={styles.loadingText}>Hämtar data{dots}</Text>}
+        {!fetching && <Text style={styles.resultText}>{data.length} Resultat</Text>}
       </View>
     )
   }
@@ -43,8 +54,7 @@ export default function App() {
         ListHeaderComponent={renderHeader(searchMode)}
         data={data}
         keyboardShouldPersistTaps="handled"
-        renderItem={({ item }) =>
-          <Faceplate model={item.modell} blueprintUrl={item.URL} style={styles.faceplate} />
+        renderItem={({ item }) => <Faceplate modell={item.robust} blueprintUrl={item.bild} style={styles.faceplate} />
         }
       />
       <BottomBar />
@@ -52,6 +62,18 @@ export default function App() {
   );
 }
 
+function Faceplate({ modell, blueprintUrl }) {
+  return (
+    <View style={styles.faceplate}>
+      <Text style={styles.model}>{modell}</Text>
+      <Image
+        source={{ uri: blueprintUrl }}
+        style={styles.blueprint}
+        resizeMode="contain"
+      />
+    </View>
+  );
+}
 
 // Renders input fields for search parameters and updates 
 // data array with search results
@@ -76,7 +98,7 @@ function SearchInputBox({ setData, fetchedData }) {
         plate.bredd.includes(parameters.bredd) &&
         plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
         plate.karmprofil.toLowerCase().includes(parameters.karmprofil.toLowerCase()) &&
-        plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
+        plate.robust.toLowerCase().includes(parameters.modell.toLowerCase()) &&
         plate.plösmått.includes(parameters.plösmått)
       )
     })
@@ -175,14 +197,7 @@ function TranslateInputBox({ setData, fetchedData }) {
   );
 }
 
-function Faceplate({ model, blueprintUrl }) {
-  return (
-    <View style={styles.faceplate}>
-      <Text style={styles.model}>{model}</Text>
-      <Image source={{ uri: blueprintUrl }} style={styles.blueprint} />
-    </View>
-  );
-}
+
 
 function ToggleMode({ setSearchMode, searchMode }) {
   return (

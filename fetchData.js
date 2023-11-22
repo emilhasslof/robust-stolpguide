@@ -16,7 +16,7 @@ export default fetchData = async () => {
     bredd: "",
     elslutbleck: "",
     karmprofil: "",
-    modell: "",
+    modell: "", 
     plösmått: "",
     */
     for (const tr of rows) {
@@ -24,13 +24,13 @@ export default fetchData = async () => {
         data.push({
             robust: elements[0].textContent,
             plösmått: elements[1].textContent,
-            profil: elements[2].textContent,
+            karmprofil: elements[2].textContent,
             höjd: elements[3].textContent,
             bredd: elements[4].textContent,
             elslutbleck: elements[5].textContent,
-            assa: elements[6].textContent,
-            safetron: elements[7].textContent,
-            step: elements[8].textContent,
+            assa: elements[6].textContent.split(','),
+            safetron: elements[7].textContent.split(','),
+            step: elements[8].textContent.split(','),
             //'Ritning-pdf': elements[9]
             bild: elements[10].childNodes[0].getAttribute('data-thumb')
         })
