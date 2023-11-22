@@ -5,11 +5,24 @@ import * as Svg from "react-native-svg";
 import Logo from "./assets/robust-logo";
 import SearchIcon from "./assets/icon-search.svg";
 import styles from "./styles";
-import dummyData from "./dummy-data.js";
+//import dummyData from "./dummy-data.js";
+import fetchData from "./fetchData.js";
 
 export default function App() {
   const [searchMode, setSearchMode] = useState(true); // true = search, false = translate
-  const [data, setData] = useState(dummyData);
+  const [fetchedData, setFetchedData] = useState([]); // fetched data from robust-se.com
+  const [data, setData] = useState([]); // Data displayed in the FlatList, changes when user searches or translates
+
+  useEffect(() => {
+    const fetchDataAndSetState = async () => {
+      console.log("Fetching data...")
+      const data = await fetchData()
+      console.log("Data lenght: " + data.length)
+      setFetchedData(data)
+      setData(data)
+    }
+    fetchDataAndSetState()
+  }, [])
 
   const renderHeader = (searchMode) => {
     return (
@@ -17,8 +30,8 @@ export default function App() {
         <StatusBar style="auto" />
         <Logo width={Dimensions.get("window").width} />
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
-        {searchMode && <SearchInputBox data={data} setData={setData} />}
-        {!searchMode && <TranslateInputBox setData={setData} />}
+        {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} />}
+        {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} />}
         <Text style={styles.resultText}>{data.length} Resultat</Text>
       </View>
     )
@@ -42,7 +55,7 @@ export default function App() {
 
 // Renders input fields for search parameters and updates 
 // data array with search results
-function SearchInputBox({ setData }) {
+function SearchInputBox({ setData, fetchedData }) {
   const [parameters, setParameters] = useState({
     höjd: "",
     bredd: "",
@@ -57,7 +70,7 @@ function SearchInputBox({ setData }) {
   }
 
   useEffect(() => {
-    const filteredData = dummyData.filter(plate => {
+    const filteredData = fetchedData.filter(plate => {
       return (
         plate.höjd.includes(parameters.höjd) &&
         plate.bredd.includes(parameters.bredd) &&
@@ -121,17 +134,17 @@ function lowerCase(s) {
   return s.toLowerCase()
 }
 
-function TranslateInputBox({ setData }) {
+function TranslateInputBox({ setData, fetchedData }) {
   const [assa, setAssa] = useState("")
   const [step, setStep] = useState("")
   const [safetron, setSafetron] = useState("")
 
   useEffect(() => {
-    const filteredData = dummyData.filter(plate => {
+    const filteredData = fetchedData.filter(plate => {
       return (
-        plate.ASSA.map(lowerCase).some((item) => { return item.includes(assa.toLowerCase()) }) &&
-        plate.Step.map(lowerCase).some((item) => { return item.includes(step.toLowerCase()) }) &&
-        plate.Safetron.map(lowerCase).some((item) => { return item.includes(safetron.toLowerCase()) })
+        plate.assa.map(lowerCase).some((item) => { return item.includes(assa.toLowerCase()) }) &&
+        plate.step.map(lowerCase).some((item) => { return item.includes(step.toLowerCase()) }) &&
+        plate.safetron.map(lowerCase).some((item) => { return item.includes(safetron.toLowerCase()) })
       )
     })
 
