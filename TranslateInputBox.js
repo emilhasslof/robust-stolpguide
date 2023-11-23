@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Pressable, Image, Text } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, TextInput, Pressable, Image, Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Divider from './Divider';
 
@@ -11,8 +11,12 @@ function TranslateInputBox({ setData, fetchedData }) {
     const [assa, setAssa] = useState("")
     const [step, setStep] = useState("")
     const [safetron, setSafetron] = useState("")
+    const assaRef = useRef()
+    const stepRef = useRef()
+    const safetronRef = useRef()
 
     useEffect(() => {
+        console.log("translating")
         const filteredData = fetchedData.filter(plate => {
             return (
                 plate.assa.map(lowerCase).some((item) => { return item.includes(assa.toLowerCase()) }) &&
@@ -31,17 +35,33 @@ function TranslateInputBox({ setData, fetchedData }) {
             <Text style={styles.manufacturer}>ASSA</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
-                <TextInput onChangeText={setAssa} style={{ width: "100%" }} />
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log("assaRef.current.focus()")
+                        assaRef.current.focus()
+                    }}
+                    hitSlop={{ top: 20, bottom: 20, left: 50 }}
+                    style={{ width: "100%" }} >
+                    <TextInput onChangeText={setAssa} style={{ width: "100%" }} ref={assaRef} />
+                </TouchableOpacity>
             </View>
             <Text style={styles.manufacturer}>Safetron</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
-                <TextInput onChangeText={setSafetron} style={{ width: "100%" }} />
+                <Pressable
+                    onPress={() => { safetronRef.current.focus() }}
+                    hitSlop={{ top: 20, bottom: 20, left: 50 }} >
+                    <TextInput onChangeText={setSafetron} style={{ width: "100%" }} ref={safetronRef} />
+                </Pressable>
             </View>
             <Text style={styles.manufacturer}>StepLock</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
-                <TextInput onChangeText={setStep} style={{ width: "100%" }} />
+                <Pressable
+                    onPress={() => { stepRef.current.focus() }}
+                    hitSlop={{ top: 20, bottom: 20, left: 50 }} >
+                    <TextInput onChangeText={setStep} style={{ width: "100%" }} ref={stepRef} />
+                </Pressable>
             </View>
             <Divider />
         </View>

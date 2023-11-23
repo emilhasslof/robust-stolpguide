@@ -99,8 +99,7 @@ function SearchInputBox({ setData, fetchedData }) {
                                 style={{
                                     height: 25,
                                     width: 25,
-                                }}
-                            />
+                                }} />
                         </Pressable>}
                     </View>
                 ))}
