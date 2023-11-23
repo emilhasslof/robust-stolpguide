@@ -1,16 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import { Dimensions, FlatList, Pressable, StyleSheet, Text, View, Image, TextInput, Animated } from "react-native";
+import { Dimensions, FlatList, Text, View, Image } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import * as Svg from "react-native-svg";
-import Logo from "./assets/robust-logo";
-import SearchIcon from "./assets/icon-search.svg";
+import Logo from "./assets/Logo.svg";
 import styles from "./styles";
-//import dummyData from "./dummy-data.js";
 import fetchData from "./fetchData.js";
 import Faceplate from "./Faceplate.js";
 import SearchInputBox from "./SearchInputBox.js";
 import TranslateInputBox from "./TranslateInputBox.js";
 import ToggleMode from "./ToggleMode.js";
+import BottomBar from "./BottomBar.js";
 
 export default function App() {
   const [searchMode, setSearchMode] = useState(true); // true = search, false = translate
@@ -41,9 +39,10 @@ export default function App() {
 
   const renderHeader = (searchMode) => {
     return (
-      <View>
+      <View style={{ marginTop: 25 }}>
         <StatusBar style="auto" />
-        <Logo width={Dimensions.get("window").width} />
+        {false && <Logo width={Dimensions.get("window").width + 1} />}
+        <Image resizeMode="contain" style={{ width: "100%", marginBottom: -15 }} source={require('./assets/Logo.png')} />
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
         {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} />}
         {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} />}
@@ -54,7 +53,7 @@ export default function App() {
   }
 
   const flatListRef = useRef();
-  faceplateHeight = Dimensions.get("window").height / 1.2;
+  faceplateHeight = Dimensions.get("window").height / 1.2 + 15; // height + marginBottom of Faceplate component
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -71,12 +70,5 @@ export default function App() {
       <BottomBar />
     </View>
   );
-}
-
-
-
-
-function BottomBar() {
-  return (<View style={styles.bottomBar} />);
 }
 
