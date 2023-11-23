@@ -32,6 +32,8 @@ function TranslateInputBox({ setData, fetchedData }) {
     return (
         <View style={styles.translateInputBox}>
             <Divider />
+
+            {/* ASSA */}
             <Text style={styles.manufacturer}>ASSA</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
@@ -44,7 +46,13 @@ function TranslateInputBox({ setData, fetchedData }) {
                     style={{ width: "100%" }} >
                     <TextInput onChangeText={setAssa} style={{ width: "100%" }} ref={assaRef} />
                 </TouchableOpacity>
+                {assa.length > 0 && <Pressable
+                    onPress={() => { setAssa("") }} style={{ position: "absolute", right: 0, top: 0 }}>
+                    <Image source={require('./assets/icon-remove.png')} />
+                </Pressable>}
             </View>
+
+            {/* SAFETRON */}
             <Text style={styles.manufacturer}>Safetron</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
@@ -54,6 +62,8 @@ function TranslateInputBox({ setData, fetchedData }) {
                     <TextInput onChangeText={setSafetron} style={{ width: "100%" }} ref={safetronRef} />
                 </Pressable>
             </View>
+
+            {/* STEPLOCK */}
             <Text style={styles.manufacturer}>StepLock</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
