@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { View, Text, Pressable, Animated, Dimensions } from "react-native";
-import styles from "./styles";
+import { View, Text, Pressable, Animated, Dimensions, StyleSheet } from "react-native";
 
 function ToggleMode({ setSearchMode, searchMode }) {
     return (
@@ -16,6 +15,39 @@ function ToggleMode({ setSearchMode, searchMode }) {
         </Pressable >
     );
 }
+
+const styles = StyleSheet.create({
+    toggleMode: {
+        marginVertical: 15,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height / 12,
+        borderRadius: 50,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5, // for Android    
+        backgroundColor: "#D8E6F6",
+    },
+    sök: {
+        textAlign: "center",
+        fontSize: 24,
+        width: "50%",
+        zIndex: 1,
+    },
+    översätt: {
+        textAlign: "center",
+        fontSize: 24,
+        width: "50%",
+        zIndex: 1,
+    },
+});
 
 // Animated marker that indicates which mode is active
 function ModeMarker({ searchMode }) {
@@ -38,7 +70,7 @@ function ModeMarker({ searchMode }) {
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        //elevation: 5, // for Android
+        elevation: 5, // for Android
     };
     const markerAnimation = Animated.timing(markerPosition, {
         toValue: searchMode ? 0 : markerWidth,
