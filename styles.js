@@ -7,43 +7,13 @@ const colors = {
     darkBlue: "#004691",
     searchFieldBackground: "#EEF4FB",
     faceplateBorder: "#ECC091",
-    test: "red",
+    test: "#0000FF30",
 }
 
 const styles = StyleSheet.create({
     container: {
         height: "100%",
         backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "top",
-    },
-    toggleMode: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height / 12,
-        borderRadius: 50,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5, // for Android    
-        backgroundColor: colors.toggleBackground,
-        marginBottom: 10,
-    },
-    sök: {
-        textAlign: "center",
-        fontSize: 24,
-        width: "50%",
-    },
-    översätt: {
-        textAlign: "center",
-        fontSize: 24,
-        width: "50%",
     },
     divider: {
         width: "100%",
@@ -74,11 +44,6 @@ const styles = StyleSheet.create({
         paddingTop: 50,
         color: "black",
         fontSize: 35,
-    },
-    blueprint: {
-        marginTop: -40,
-        height: "100%",
-        width: "100%",
     },
     searchBox: {
         backgroundColor: colors.searchFieldBackground,

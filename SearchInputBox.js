@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Pressable, Image } from 'react-native';
+import { View, TextInput, Pressable, Image, Text } from 'react-native';
 import styles from './styles';
 import Divider from './Divider';
 
@@ -22,12 +22,12 @@ function SearchInputBox({ setData, fetchedData }) {
     useEffect(() => {
         const filteredData = fetchedData.filter(plate => {
             return (
-                plate.höjd.includes(parameters.höjd) &&
-                plate.bredd.includes(parameters.bredd) &&
+                plate.höjd.includes(parameters.höjd.replace(/\D/g, "")) &&
+                plate.bredd.includes(parameters.bredd.replace(/\D/g, "")) &&
                 plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
                 plate.karmprofil.toLowerCase().includes(parameters.karmprofil.toLowerCase()) &&
                 plate.robust.toLowerCase().includes(parameters.modell.toLowerCase()) &&
-                plate.plösmått.includes(parameters.plösmått)
+                plate.plösmått.includes(parameters.plösmått.replace(/\D/g, ""))
             )
         })
 
@@ -62,17 +62,46 @@ function SearchInputBox({ setData, fetchedData }) {
                 {inputFields.map((field, index) => (
                     <View style={styles.input} key={index}>
                         <Image source={require('./assets/icon-search.png')} />
-                        {/*<SearchIcon width={20} height={20} />*/}
                         <Pressable onPress={() => focusTextInput(index)}
                             hitSlop={{ top: 20, bottom: 20, left: 50 }} style={{ width: "100%" }}>
                             <TextInput
                                 ref={field.ref}
                                 keyboardType={field.numeric ? 'numeric' : 'default'}
                                 onChangeText={(text) => setParameter(field.name, text)}
+                                value={parameters[field.name]}
+                                onEndEditing={(event) => {
+                                    if (field.numeric && event.nativeEvent.text != "" && !event.nativeEvent.text.includes("mm")) {
+                                        console.log("onEndEditing")
+                                        console.log(event.nativeEvent.text)
+                                        setParameter(field.name, event.nativeEvent.text + " mm")
+                                    }
+                                }}
                                 placeholder={field.name === "modell" ?
                                     "Mont. stolpe" : field.name.charAt(0).toUpperCase() + field.name.slice(1)}
                             />
                         </Pressable>
+                        {parameters[field.name] != "" && <Pressable
+                            onPress={() => {
+                                if (inputFields[index].ref.current) {
+                                    inputFields[index].ref.current.clear()
+                                    setParameter(field.name, "")
+                                }
+                            }}
+                            style={{
+                                position: "absolute",
+                                right: 5,
+                                height: 25,
+                                width: 25,
+                            }}>
+                            <Image
+                                source={require('./assets/icon-remove.png')}
+                                resizeMode="contain"
+                                style={{
+                                    height: 25,
+                                    width: 25,
+                                }}
+                            />
+                        </Pressable>}
                     </View>
                 ))}
             </View>
