@@ -7,14 +7,16 @@ import SearchIcon from "./assets/icon-search.svg";
 import styles from "./styles";
 //import dummyData from "./dummy-data.js";
 import fetchData from "./fetchData.js";
+import Faceplate from "./Faceplate.js";
 
 export default function App() {
   const [searchMode, setSearchMode] = useState(true); // true = search, false = translate
   const [fetchedData, setFetchedData] = useState([]); // fetched data from robust-se.com
-  const [data, setData] = useState([]); // Data displayed in the FlatList, changes when user searches or translates
+  const [data, setData] = useState([]); // List of faceplates displayed in the FlatList, changes when user searches or translates
   const [fetching, setFetching] = useState(true);
   const [dots, setDots] = useState('');
 
+  // Adds animated dots to the loading text
   useEffect(() => {
     const interval = setInterval(() => {
       setDots(prev => (prev.length < 3 ? prev + '.' : ''));
@@ -23,7 +25,7 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-
+  // Fetches data from robust-se.com and sets state
   useEffect(() => {
     const fetchDataAndSetState = async () => {
       const data = await fetchData()
@@ -48,32 +50,26 @@ export default function App() {
     )
   }
 
+  const flatListRef = useRef();
+  faceplateHeight = Dimensions.get("window").height / 1.2;
   return (
-    <View >
+    <View style={{ flex: 1 }}>
       <FlatList
         ListHeaderComponent={renderHeader(searchMode)}
         data={data}
         keyboardShouldPersistTaps="handled"
+        getItemLayout={(data, index) => (
+          { length: faceplateHeight, offset: faceplateHeight * index, index })
+        }
         renderItem={({ item }) => <Faceplate modell={item.robust} blueprintUrl={item.bild} style={styles.faceplate} />
         }
       />
+
       <BottomBar />
     </View>
   );
 }
 
-function Faceplate({ modell, blueprintUrl }) {
-  return (
-    <View style={styles.faceplate}>
-      <Text style={styles.model}>{modell}</Text>
-      <Image
-        source={{ uri: blueprintUrl }}
-        style={styles.blueprint}
-        resizeMode="contain"
-      />
-    </View>
-  );
-}
 
 // Renders input fields for search parameters and updates 
 // data array with search results
@@ -141,7 +137,8 @@ function SearchInputBox({ setData, fetchedData }) {
                 ref={field.ref}
                 keyboardType={field.numeric ? 'numeric' : 'default'}
                 onChangeText={(text) => setParameter(field.name, text)}
-                placeholder={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
+                placeholder={field.name === "modell" ?
+                  "Mont. stolpe" : field.name.charAt(0).toUpperCase() + field.name.slice(1)}
               />
             </Pressable>
           </View>
