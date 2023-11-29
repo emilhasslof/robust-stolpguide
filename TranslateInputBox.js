@@ -16,7 +16,6 @@ function TranslateInputBox({ setData, fetchedData }) {
     const safetronRef = useRef()
 
     useEffect(() => {
-        console.log("translating")
         const filteredData = fetchedData.filter(plate => {
             return (
                 plate.assa.map(lowerCase).some((item) => { return item.includes(assa.toLowerCase()) }) &&
@@ -37,18 +36,28 @@ function TranslateInputBox({ setData, fetchedData }) {
             <Text style={styles.manufacturer}>ASSA</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
-                <TouchableOpacity
-                    onPress={() => {
-                        console.log("assaRef.current.focus()")
-                        assaRef.current.focus()
-                    }}
+                <Pressable
+                    onPress={() => { assaRef.current.focus() }}
                     hitSlop={{ top: 20, bottom: 20, left: 50 }}
                     style={{ width: "100%" }} >
                     <TextInput onChangeText={setAssa} style={{ width: "100%" }} ref={assaRef} />
-                </TouchableOpacity>
-                {assa.length > 0 && <Pressable
-                    onPress={() => { setAssa("") }} style={{ position: "absolute", right: 0, top: 0 }}>
-                    <Image source={require('./assets/icon-remove.png')} />
+                </Pressable>
+                {assa.length != "" && <Pressable
+                    onPress={() => {
+                        assaRef.current.clear()
+                        setAssa("")
+                    }}
+                    style={{
+                        position: "absolute",
+                        right: 5,
+                    }}>
+                    <Image
+                        source={require('./assets/icon-remove.png')}
+                        resizeMode='contain'
+                        style={{
+                            height: 25,
+                            width: 25,
+                        }} />
                 </Pressable>}
             </View>
 
@@ -58,20 +67,55 @@ function TranslateInputBox({ setData, fetchedData }) {
                 <Image source={require('./assets/icon-search.png')} />
                 <Pressable
                     onPress={() => { safetronRef.current.focus() }}
-                    hitSlop={{ top: 20, bottom: 20, left: 50 }} >
+                    hitSlop={{ top: 20, bottom: 20, left: 50 }}
+                    style={{ width: "100%" }} >
                     <TextInput onChangeText={setSafetron} style={{ width: "100%" }} ref={safetronRef} />
                 </Pressable>
+                {safetron.length != "" && <Pressable
+                    onPress={() => {
+                        safetronRef.current.clear()
+                        setSafetron("")
+                    }}
+                    style={{
+                        position: "absolute",
+                        right: 5,
+                    }}>
+                    <Image
+                        source={require('./assets/icon-remove.png')}
+                        resizeMode='contain'
+                        style={{
+                            height: 25,
+                            width: 25,
+                        }} />
+                </Pressable>}
             </View>
-
             {/* STEPLOCK */}
             <Text style={styles.manufacturer}>StepLock</Text>
             <View style={[styles.input, { width: "48%" }]}>
                 <Image source={require('./assets/icon-search.png')} />
                 <Pressable
                     onPress={() => { stepRef.current.focus() }}
-                    hitSlop={{ top: 20, bottom: 20, left: 50 }} >
+                    hitSlop={{ top: 20, bottom: 20, left: 50 }}
+                    style={{ width: "100%" }} >
                     <TextInput onChangeText={setStep} style={{ width: "100%" }} ref={stepRef} />
                 </Pressable>
+                {step.length != "" && <Pressable
+                    onPress={() => {
+                        stepRef.current.clear()
+                        setStep("")
+                    }}
+                    style={{
+                        position: "absolute",
+                        right: 5,
+                    }}>
+                    <Image
+                        source={require('./assets/icon-remove.png')}
+                        resizeMode='contain'
+                        style={{
+                            height: 25,
+                            width: 25,
+                        }} />
+                </Pressable>}
             </View>
             <Divider />
         </View>
