@@ -24,6 +24,7 @@ function TranslateInputBox({ setData, fetchedData }) {
     const safetronOptions = fetchedData.map(plate => plate.safetron).flat().filter((item, index, array) => array.indexOf(item) === index).sort()
     const stepOptions = fetchedData.map(plate => plate.step).flat().filter((item, index, array) => array.indexOf(item) === index).sort()
     const [options, setOptions] = useState([])
+    const [inputString, setInputString] = useState("")
 }
 
 useEffect(() => {
@@ -46,6 +47,7 @@ return (
             {isFocused && <Dropdown
                 options={options}
                 inputPosition={inputPosition}
+                inputString={inputString}
             />
             }
 
@@ -58,7 +60,10 @@ return (
                     hitSlop={{ top: 20, bottom: 20, left: 50 }}
                     style={{ width: "100%" }} >
                     <TextInput
-                        onChangeText={setAssa}
+                        onChangeText={(text) => {
+                            setAssa(text)
+                            setInputString(text)
+                        }}
                         style={{ width: "100%" }}
                         ref={assaRef}
                         onFocus={() => {
