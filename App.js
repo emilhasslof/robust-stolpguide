@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { Dimensions, FlatList, Text, View, Image } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import Logo from "./assets/Logo.svg";
 import styles from "./styles";
 import fetchData from "./fetchData.js";
 import Faceplate from "./Faceplate.js";
@@ -16,11 +15,11 @@ export default function App() {
   const [fetchedData, setFetchedData] = useState([]); // fetched data from robust-se.com
   const [data, setData] = useState([]); // List of faceplates displayed in the FlatList, changes when user searches or translates
   const [fetching, setFetching] = useState(true);
-  const [currFocusedInputRef, setCurrFocusedInputRef] = useState(null); // Used to conditionally render the dropdown for the correct input field
 
   // Fetches data from robust-se.com and sets state
   useEffect(() => {
     const fetchDataAndSetState = async () => {
+      console.log("Fetching data...")
       const data = await fetchData()
       setFetchedData(data)
       setData(data)
@@ -33,18 +32,16 @@ export default function App() {
     return (
       <View style={{ marginTop: 25 }}>
         <StatusBar style="auto" />
-        <Logo width={Dimensions.get("window").width + 1} />
-        {/*<Image resizeMode="contain" style={{ width: "100%", marginBottom: -15 }} source={require('./assets/Logo.png')} />*/}
+        {<Image resizeMode="contain" style={{ width: "100%", marginBottom: -15 }} source={require('./assets/Logo.png')} />}
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
-        {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} setCurrFocusedInputRef={setCurrFocusedInputRef} />}
-        {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} setCurrFocusedInputRef={setCurrFocusedInputRef} />}
+        {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} />}
+        {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} />}
         {fetching && <Text style={styles.loadingText}>Hämtar data...</Text>}
         {!fetching && <Text style={styles.resultText}>{data.length} Resultat</Text>}
       </View>
     )
   }
 
-  const flatListRef = useRef();
   faceplateHeight = Dimensions.get("window").height / 1.2 + 15; // height + marginBottom of Faceplate component
   return (
     <View style={{ flex: 1 }}>
@@ -59,11 +56,8 @@ export default function App() {
           renderItem={({ item }) => <Faceplate modell={item.robust} blueprintUrl={item.bild} style={styles.faceplate} />
           }
         />
-        <View style={{ zIndex: 1 }}>
-          {currFocusedInputRef && <Dropdown textInputRef={currFocusedInputRef} options={['10', '11', '110', 'one', 'two', 'three']} />}
-        </View>
-        <BottomBar />
       </View>
+      <BottomBar />
     </View>
   );
 }

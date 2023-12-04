@@ -8,11 +8,14 @@ function Dropdown({ options, inputPosition }) {
     return (
         <View style={{
             position: "absolute",
-            height: 200,
-            width: 200,
+            height: 300,
+            width: inputPosition.width,
             left: inputPosition.x,
-            top: inputPosition.y,
-            backgroundColor: "red",
+            top: inputPosition.y + inputPosition.height,
+            backgroundColor: "white",
+            borderRadius: 10,
+            borderBlockColor: "black",
+            borderWidth: 1,
             zIndex: 1,
         }}>
 
