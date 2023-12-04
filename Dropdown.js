@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 
 function Dropdown({ options, textInputRef }) {
     const [dropdownStyle, setDropdownStyle] = useState({})
+    //console.log("rendering dropdown:", textInputRef)
 
     useEffect(() => {
         if (!textInputRef.current) return

@@ -8,7 +8,7 @@ function lowerCase(s) {
     return s.toLowerCase()
 }
 
-function TranslateInputBox({ setData, fetchedData }) {
+function TranslateInputBox({ setData, fetchedData, setCurrFocusedInputRef }) {
     const [assa, setAssa] = useState("")
     const [step, setStep] = useState("")
     const [safetron, setSafetron] = useState("")
@@ -41,7 +41,12 @@ function TranslateInputBox({ setData, fetchedData }) {
                     onPress={() => { assaRef.current.focus() }}
                     hitSlop={{ top: 20, bottom: 20, left: 50 }}
                     style={{ width: "100%" }} >
-                    <TextInput onChangeText={setAssa} style={{ width: "100%" }} ref={assaRef} />
+                    <TextInput
+                        onChangeText={setAssa}
+                        style={{ width: "100%" }}
+                        ref={assaRef}
+                        onFocus={() => setCurrFocusedInputRef(assaRef)}
+                        onBlur={() => setCurrFocusedInputRef(null)} />
                 </Pressable>
                 {assa.length != "" && <ClearInputButton
                     textInputRef={assaRef}
@@ -56,7 +61,11 @@ function TranslateInputBox({ setData, fetchedData }) {
                     onPress={() => { safetronRef.current.focus() }}
                     hitSlop={{ top: 20, bottom: 20, left: 50 }}
                     style={{ width: "100%" }} >
-                    <TextInput onChangeText={setSafetron} style={{ width: "100%" }} ref={safetronRef} />
+                    <TextInput
+                        onChangeText={setSafetron}
+                        style={{ width: "100%" }}
+                        ref={safetronRef}
+                    />
                 </Pressable>
                 {safetron.length != "" &&
                     <ClearInputButton
@@ -71,7 +80,11 @@ function TranslateInputBox({ setData, fetchedData }) {
                     onPress={() => { stepRef.current.focus() }}
                     hitSlop={{ top: 20, bottom: 20, left: 50 }}
                     style={{ width: "100%" }} >
-                    <TextInput onChangeText={setStep} style={{ width: "100%" }} ref={stepRef} />
+                    <TextInput
+                        onChangeText={setStep}
+                        style={{ width: "100%" }}
+                        ref={stepRef}
+                    />
                 </Pressable>
                 {step.length != "" &&
                     <ClearInputButton
