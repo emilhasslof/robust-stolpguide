@@ -6,6 +6,7 @@ function ClearInputButton({ textInputRef, clearInput }) {
         <Pressable
             onPress={() => {
                 if (textInputRef.current) {
+                    textInputRef.current.focus()
                     textInputRef.current.clear()
                     clearInput()
                 }

@@ -16,17 +16,7 @@ export default function App() {
   const [fetchedData, setFetchedData] = useState([]); // fetched data from robust-se.com
   const [data, setData] = useState([]); // List of faceplates displayed in the FlatList, changes when user searches or translates
   const [fetching, setFetching] = useState(true);
-  const [dots, setDots] = useState('');
   const [currFocusedInputRef, setCurrFocusedInputRef] = useState(null); // Used to conditionally render the dropdown for the correct input field
-  console.log("rendering app")
-  // Adds animated dots to the loading text
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots(prev => (prev.length < 3 ? prev + '.' : ''));
-    }, 500); // Adjust the speed as needed
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Fetches data from robust-se.com and sets state
   useEffect(() => {
@@ -48,7 +38,7 @@ export default function App() {
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
         {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} setCurrFocusedInputRef={setCurrFocusedInputRef} />}
         {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} setCurrFocusedInputRef={setCurrFocusedInputRef} />}
-        {fetching && <Text style={styles.loadingText}>Hämtar data{dots}</Text>}
+        {fetching && <Text style={styles.loadingText}>Hämtar data...</Text>}
         {!fetching && <Text style={styles.resultText}>{data.length} Resultat</Text>}
       </View>
     )
@@ -58,18 +48,22 @@ export default function App() {
   faceplateHeight = Dimensions.get("window").height / 1.2 + 15; // height + marginBottom of Faceplate component
   return (
     <View style={{ flex: 1 }}>
-      {currFocusedInputRef && <Dropdown textInputRef={currFocusedInputRef} options={['10', '11', '110', 'one', 'two', 'three']} />}
-      <FlatList
-        ListHeaderComponent={renderHeader(searchMode)}
-        data={data}
-        keyboardShouldPersistTaps="handled"
-        getItemLayout={(data, index) => (
-          { length: faceplateHeight, offset: faceplateHeight * index, index })
-        }
-        renderItem={({ item }) => <Faceplate modell={item.robust} blueprintUrl={item.bild} style={styles.faceplate} />
-        }
-      />
-      <BottomBar />
+      <View style={{ zIndex: 0 }}>
+        <FlatList
+          ListHeaderComponent={renderHeader(searchMode)}
+          data={data}
+          keyboardShouldPersistTaps="handled"
+          getItemLayout={(data, index) => (
+            { length: faceplateHeight, offset: faceplateHeight * index, index })
+          }
+          renderItem={({ item }) => <Faceplate modell={item.robust} blueprintUrl={item.bild} style={styles.faceplate} />
+          }
+        />
+        <View style={{ zIndex: 1 }}>
+          {currFocusedInputRef && <Dropdown textInputRef={currFocusedInputRef} options={['10', '11', '110', 'one', 'two', 'three']} />}
+        </View>
+        <BottomBar />
+      </View>
     </View>
   );
 }

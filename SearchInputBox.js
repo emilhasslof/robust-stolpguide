@@ -6,7 +6,7 @@ import ClearInputButton from './ClearInputButton';
 
 // Renders input fields for search parameters and updates 
 // data array with search results
-function SearchInputBox({ setData, fetchedData, setCurrFocusedInputRef }) {
+function SearchInputBox({ setData, fetchedData }) {
     const [parameters, setParameters] = useState({
         höjd: "",
         bredd: "",

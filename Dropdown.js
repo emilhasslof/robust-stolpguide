@@ -1,42 +1,23 @@
 import { React, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 
-function Dropdown({ options, textInputRef }) {
+function Dropdown({ options, inputPosition }) {
     const [dropdownStyle, setDropdownStyle] = useState({})
-    //console.log("rendering dropdown:", textInputRef)
-
-    useEffect(() => {
-        if (!textInputRef.current) return
-        textInputRef.current.measure((x, y, width, height, pageX, pageY) => {
-            setDropdownStyle({
-                position: "absolute",
-                top: pageY + height,
-                left: pageX,
-                width: width,
-                height: 200,
-                maxHeight: Dimensions.get("window").height / 2,
-                backgroundColor: "red",
-                zIndex: 1,
-            })
-        })
-    })
+    console.log("rendring dropdown. Position: ", inputPosition)
 
     return (
-        <View style={dropdownStyle}>
+        <View style={{
+            position: "absolute",
+            height: 200,
+            width: 200,
+            left: inputPosition.x,
+            top: inputPosition.y,
+            backgroundColor: "red",
+            zIndex: 1,
+        }}>
 
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    dropdown: {
-        position: "absolute",
-        width: "40%",
-        height: 200,
-        maxHeight: Dimensions.get("window").height / 2,
-        backgroundColor: "red",
-        zIndex: 1,
-    }
-})
 
 export default Dropdown;
