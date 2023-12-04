@@ -44,8 +44,8 @@ function TranslateInputBox({ setData, fetchedData }) {
                     <TextInput onChangeText={setAssa} style={{ width: "100%" }} ref={assaRef} />
                 </Pressable>
                 {assa.length != "" && <ClearInputButton
-                    text_input_ref={assaRef}
-                    clear_input={() => setAssa("")} />}
+                    textInputRef={assaRef}
+                    clearInput={() => setAssa("")} />}
             </View>
 
             {/* SAFETRON */}
@@ -60,8 +60,8 @@ function TranslateInputBox({ setData, fetchedData }) {
                 </Pressable>
                 {safetron.length != "" &&
                     <ClearInputButton
-                        text_input_ref={safetronRef}
-                        clear_input={() => setSafetron("")} />}
+                        textInputRef={safetronRef}
+                        clearInput={() => setSafetron("")} />}
             </View>
             {/* STEPLOCK */}
             <Text style={styles.manufacturer}>StepLock</Text>
@@ -75,8 +75,8 @@ function TranslateInputBox({ setData, fetchedData }) {
                 </Pressable>
                 {step.length != "" &&
                     <ClearInputButton
-                        text_input_ref={stepRef}
-                        clear_input={() => setStep("")} />}
+                        textInputRef={stepRef}
+                        clearInput={() => setStep("")} />}
             </View>
             <Divider />
         </View>

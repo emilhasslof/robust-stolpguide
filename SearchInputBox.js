@@ -84,10 +84,8 @@ function SearchInputBox({ setData, fetchedData }) {
                             />
                         </Pressable>
                         {parameters[field.name] != "" && <ClearInputButton
-                            text_input_ref={field.ref}
-                            clear_input={() => { setParameter(field.name, "") }} />
-                        }
-                        {//field.ref.current.isFocused() && <Dropdown options={[]} />'
+                            textInputRef={field.ref}
+                            clearInput={() => { setParameter(field.name, "") }} />
                         }
                     </View>
                 ))}
