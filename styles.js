@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
         fontWeight: "300",
         marginLeft: "4%",
     },
-
 });
 
 export default styles;

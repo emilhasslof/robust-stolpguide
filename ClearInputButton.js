@@ -1,13 +1,13 @@
 import React from 'react'
 import { Pressable, Image } from 'react-native'
 
-function ClearInputButton({ text_input_ref, clear_input }) {
+function ClearInputButton({ textInputRef, clearInput }) {
     return (
         <Pressable
             onPress={() => {
-                if (text_input_ref.current) {
-                    text_input_ref.current.clear()
-                    clear_input()
+                if (textInputRef.current) {
+                    textInputRef.current.clear()
+                    clearInput()
                 }
             }}
             style={{
