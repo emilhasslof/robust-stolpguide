@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, FlatList, Pressable } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList, Pressable, Text } from 'react-native';
 
 function Dropdown({ options, inputPosition, inputString }) {
     const [dropdownStyle, setDropdownStyle] = useState({})
@@ -10,10 +10,13 @@ function Dropdown({ options, inputPosition, inputString }) {
         setData(options.filter(option => option.toLowerCase().includes(inputString.toLowerCase())))
     }, [inputString])
 
-    return (
-        <View style={{
+    const handlePress = (item) => {
+        console.log("pressed" + item)
+    }
+    const styles = StyleSheet.create({
+        container: {
             position: "absolute",
-            height: 300,
+            height: 250,
             width: inputPosition.width,
             left: inputPosition.x,
             top: inputPosition.y + inputPosition.height,
@@ -22,19 +25,45 @@ function Dropdown({ options, inputPosition, inputString }) {
             borderBlockColor: "black",
             borderWidth: 1,
             zIndex: 1,
-        }}>
+        },
+        flatlist: {
+            flex: 1,
+        },
+        text: {
+            fontSize: 12,
+        },
+        listItem: {
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: 40,
+            borderWidth: 1,
+            backgroundColor: "lightgrey",
+            marginTop: 5,
+        }
+
+    })
+
+    return (
+        <View style={styles.container}>
             <FlatList
+                nestedScrollEnabled={true}
+                style={styles.flatlist}
                 data={data}
+                horizontal={false}
                 renderItem={({ item }) =>
                     <Pressable
-                        onPress={handlePress}>
-                        <Text>{item}</Text>
+                        onPress={() => handlePress(item)}>
+                        <View style={styles.listItem}>
+                            <Text style={styles.text}>{item}</Text>
+                        </View>
                     </Pressable>}
                 keyExtractor={item => item}
             />
 
-        </View>
+        </View >
     );
 }
+
 
 export default Dropdown;

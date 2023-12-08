@@ -20,12 +20,19 @@ function TranslateInputBox({ setData, fetchedData }) {
     const [showDropdown, setShowDropdown] = useState(false)
     const [inputPosition, setInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
 
-    const assaOptions = fetchedData.map(plate => plate.assa).flat().filter((item, index, array) => array.indexOf(item) === index).sort()
+    const assaOptions = extractOptions("assa")
     const safetronOptions = fetchedData.map(plate => plate.safetron).flat().filter((item, index, array) => array.indexOf(item) === index).sort()
     const stepOptions = fetchedData.map(plate => plate.step).flat().filter((item, index, array) => array.indexOf(item) === index).sort()
     const [options, setOptions] = useState([])
     const [inputString, setInputString] = useState("")
 
+    function extractOptions(manufacturer) {
+        return fetchedData.map(plate => plate[manufacturer])
+            .flat()
+            .filter(item => item != "")
+            .filter((item, index, array) => array.indexOf(item) === index)
+            .sort()
+    }
 
     useEffect(() => {
         const filteredData = fetchedData.filter(plate => {
@@ -44,7 +51,7 @@ function TranslateInputBox({ setData, fetchedData }) {
         <View style={{ height: "auto" }}>
             <View style={styles.translateInputBox} >
                 <Divider />
-                {isFocused && <Dropdown
+                {showDropdown && <Dropdown
                     options={options}
                     inputPosition={inputPosition}
                     inputString={inputString}
