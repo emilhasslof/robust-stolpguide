@@ -17,6 +17,7 @@ function TranslateInputBox({ setData, fetchedData }) {
     const assaRef = useRef()
     const safetronRef = useRef()
     const stepRef = useRef()
+    const stateSetterRef = useRef()
 
     const [showDropdown, setShowDropdown] = useState(false)
     const inputFieldRef = useRef(null)
@@ -59,8 +60,8 @@ function TranslateInputBox({ setData, fetchedData }) {
                     inputString={inputString}
                     choiceCallback={(item) => {
                         setShowDropdown(false)
-                        assaRef.current.setNativeProps({ text: item })
-                        setAssa(item)
+                        inputFieldRef.current.setNativeProps({ text: item })
+                        stateSetterRef.current(item)
                     }}
                 />
                 }
@@ -83,7 +84,8 @@ function TranslateInputBox({ setData, fetchedData }) {
                             onFocus={() => {
                                 setShowDropdown(true)
                                 setOptions(assaOptions)
-                                inputFieldRef.current = assaRef
+                                inputFieldRef.current = assaRef.current
+                                stateSetterRef.current = setAssa
                             }}
                             onBlur={() => setShowDropdown(false)}
                         />

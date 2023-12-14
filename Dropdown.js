@@ -17,11 +17,10 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
         container: {
             position: "absolute",
             height: containerHeight,
-            width: inputPosition.width - 50,
-            left: inputPosition.x + 25,
+            width: inputPosition.width - 20,
+            left: inputPosition.x + 10,
             top: inputPosition.y + inputPosition.height,
             backgroundColor: "white",
-            borderRadius: 10,
             borderBlockColor: "black",
             borderWidth: 1,
             zIndex: 1,
