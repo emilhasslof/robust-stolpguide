@@ -13,11 +13,13 @@ function TranslateInputBox({ setData, fetchedData }) {
     const [assa, setAssa] = useState("")
     const [safetron, setSafetron] = useState("")
     const [step, setStep] = useState("")
+
     const assaRef = useRef()
     const safetronRef = useRef()
     const stepRef = useRef()
 
     const [showDropdown, setShowDropdown] = useState(false)
+    const inputFieldRef = useRef(null)
     const [inputPosition, setInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
 
     const assaOptions = extractOptions("assa")
@@ -55,6 +57,11 @@ function TranslateInputBox({ setData, fetchedData }) {
                     options={options}
                     inputPosition={inputPosition}
                     inputString={inputString}
+                    choiceCallback={(item) => {
+                        setShowDropdown(false)
+                        assaRef.current.setNativeProps({ text: item })
+                        setAssa(item)
+                    }}
                 />
                 }
 
@@ -76,13 +83,17 @@ function TranslateInputBox({ setData, fetchedData }) {
                             onFocus={() => {
                                 setShowDropdown(true)
                                 setOptions(assaOptions)
+                                inputFieldRef.current = assaRef
                             }}
                             onBlur={() => setShowDropdown(false)}
                         />
                     </Pressable>
                     {assa.length != "" && <ClearInputButton
                         textInputRef={assaRef}
-                        clearInput={() => setAssa("")} />}
+                        clearInput={() => {
+                            setAssa("")
+                            setInputString("")
+                        }} />}
                 </View>
 
                 {/* SAFETRON */}

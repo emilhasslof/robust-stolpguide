@@ -1,24 +1,24 @@
 import { React, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions, FlatList, Pressable, Text } from 'react-native';
 
-function Dropdown({ options, inputPosition, inputString }) {
-    const [dropdownStyle, setDropdownStyle] = useState({})
+function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
     const [data, setData] = useState(options)
-    console.log("rendring dropdown. Position: ", inputPosition)
 
+    // Listen for user input and update options to match it
     useEffect(() => {
         setData(options.filter(option => option.toLowerCase().includes(inputString.toLowerCase())))
     }, [inputString])
 
     const handlePress = (item) => {
-        console.log("pressed" + item)
+        choiceCallback(item)
     }
+    const containerHeight = Math.min(data.length * 30, 150)
     const styles = StyleSheet.create({
         container: {
             position: "absolute",
-            height: 250,
-            width: inputPosition.width,
-            left: inputPosition.x,
+            height: containerHeight,
+            width: inputPosition.width - 50,
+            left: inputPosition.x + 25,
             top: inputPosition.y + inputPosition.height,
             backgroundColor: "white",
             borderRadius: 10,
@@ -28,18 +28,18 @@ function Dropdown({ options, inputPosition, inputString }) {
         },
         flatlist: {
             flex: 1,
+            alignContent: "center",
         },
         text: {
             fontSize: 12,
+            textAlign: "center",
         },
         listItem: {
             justifyContent: "center",
             alignItems: "center",
-            width: "100%",
-            height: 40,
-            borderWidth: 1,
-            backgroundColor: "lightgrey",
-            marginTop: 5,
+            width: "90%",
+            height: 30,
+            marginHorizontal: "5%",
         }
 
     })
