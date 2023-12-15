@@ -15,16 +15,17 @@ export default function App() {
   const [fetchedData, setFetchedData] = useState([]); // fetched data from robust-se.com
   const [data, setData] = useState([]); // List of faceplates displayed in the FlatList, changes when user searches or translates
   const [fetching, setFetching] = useState(true);
+  const [showResults, setShowResults] = useState(true);
 
-  // Fetches data from robust-se.com and sets state
+  // Fetches data from robust-se.com writes it to state
+  const fetchDataAndSetState = async () => {
+    const data = await fetchData()
+    setFetchedData(data)
+    setData(data)
+    setFetching(false)
+  }
+  // Fetches data on first render
   useEffect(() => {
-    const fetchDataAndSetState = async () => {
-      console.log("Fetching data...")
-      const data = await fetchData()
-      setFetchedData(data)
-      setData(data)
-      setFetching(false)
-    }
     fetchDataAndSetState()
   }, [])
 
@@ -35,9 +36,9 @@ export default function App() {
         {<Image resizeMode="contain" style={{ width: "100%", marginBottom: -15 }} source={require('./assets/Logo.png')} />}
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
         {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} />}
-        {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} />}
+        {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} showResults={showResults} setShowResults={setShowResults} />}
         {fetching && <Text style={styles.loadingText}>Hämtar data...</Text>}
-        {!fetching && <Text style={styles.resultText}>{data.length} Resultat</Text>}
+        {!fetching && showResults && <Text style={styles.resultText}>{data.length} Resultat</Text>}
       </View>
     )
   }
@@ -48,7 +49,7 @@ export default function App() {
       <View style={{ zIndex: 0 }}>
         <FlatList
           ListHeaderComponent={renderHeader(searchMode)}
-          data={data}
+          data={showResults ? data : []}
           keyboardShouldPersistTaps="handled"
           getItemLayout={(data, index) => (
             { length: faceplateHeight, offset: faceplateHeight * index, index })

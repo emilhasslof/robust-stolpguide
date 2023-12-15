@@ -12,11 +12,12 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
     const handlePress = (item) => {
         choiceCallback(item)
     }
-    const containerHeight = Math.min(data.length * 30, 150)
+    const containerHeight = Math.min(data.length * 30, 500)
     const styles = StyleSheet.create({
         container: {
             position: "absolute",
             height: containerHeight,
+            overflow: "hidden",
             width: inputPosition.width - 20,
             left: inputPosition.x + 10,
             top: inputPosition.y + inputPosition.height,

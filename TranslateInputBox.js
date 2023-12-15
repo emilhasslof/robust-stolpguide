@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TextInput, Pressable, Image, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, TextInput, Pressable, Image, Text, TouchableOpacity, Modal, Dimensions } from 'react-native';
 import styles from './styles';
 import Divider from './Divider';
 import ClearInputButton from './ClearInputButton';
@@ -9,33 +9,46 @@ function lowerCase(s) {
     return s.toLowerCase()
 }
 
-function TranslateInputBox({ setData, fetchedData }) {
+function TranslateInputBox({ setData, fetchedData, showResults, setShowResults }) {
+    // state for text entered into each input field
     const [assa, setAssa] = useState("")
     const [safetron, setSafetron] = useState("")
     const [step, setStep] = useState("")
 
+    // refs for each textInput
     const assaRef = useRef()
     const safetronRef = useRef()
     const stepRef = useRef()
     const stateSetterRef = useRef()
 
+    // state necessary for rendering dropdown
     const [showDropdown, setShowDropdown] = useState(false)
-    const inputFieldRef = useRef(null)
-    const [inputPosition, setInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
+    const focusedInputFieldRef = useRef(null)
+    const [inputPositions, setInputPositions] = useState({
+        assa: { x: 0, y: 0, width: 0, height: 0 },
+        safetron: { x: 0, y: 0, width: 0, height: 0 },
+        step: { x: 0, y: 0, width: 0, height: 0 },
+    })
+    const setInputPosition = (key, value) => {
+        setInputPositions({ ...inputPositions, [key]: value })
+    }
+    const [focusedInputPosition, setFocusedInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
 
+    // state for dropdown options
     const assaOptions = extractOptions("assa")
-    const safetronOptions = fetchedData.map(plate => plate.safetron).flat().filter((item, index, array) => array.indexOf(item) === index).sort()
-    const stepOptions = fetchedData.map(plate => plate.step).flat().filter((item, index, array) => array.indexOf(item) === index).sort()
-    const [options, setOptions] = useState([])
-    const [inputString, setInputString] = useState("")
-
+    const safetronOptions = extractOptions("safetron")
+    const stepOptions = extractOptions("step")
     function extractOptions(manufacturer) {
-        return fetchedData.map(plate => plate[manufacturer])
+        return fetchedData.map(robustPlate => robustPlate[manufacturer])
             .flat()
             .filter(item => item != "")
             .filter((item, index, array) => array.indexOf(item) === index)
             .sort()
     }
+
+    const [options, setOptions] = useState([])
+    const [inputString, setInputString] = useState("")
+
 
     useEffect(() => {
         const filteredData = fetchedData.filter(plate => {
@@ -51,16 +64,17 @@ function TranslateInputBox({ setData, fetchedData }) {
     }, [assa, step, safetron])
 
     return (
-        <View style={{ height: "auto" }}>
+        <View style={{ height: showResults ? "auto" : 900 }}>
             <View style={styles.translateInputBox} >
                 <Divider />
                 {showDropdown && <Dropdown
                     options={options}
-                    inputPosition={inputPosition}
+                    inputPosition={focusedInputPosition}
                     inputString={inputString}
                     choiceCallback={(item) => {
                         setShowDropdown(false)
-                        inputFieldRef.current.setNativeProps({ text: item })
+                        focusedInputFieldRef.current.setNativeProps({ text: item })
+                        focusedInputFieldRef.current.blur()
                         stateSetterRef.current(item)
                     }}
                 />
@@ -68,7 +82,10 @@ function TranslateInputBox({ setData, fetchedData }) {
 
                 {/* ASSA */}
                 <Text style={styles.manufacturer}>ASSA</Text>
-                <View style={[styles.input, { width: "48%" }]} onLayout={(event) => { setInputPosition(event.nativeEvent.layout) }}>
+                <View style={[styles.input, { width: "48%" }]}
+                    onLayout={(event) => {
+                        setInputPosition("assa", event.nativeEvent.layout)
+                    }}>
                     <Image source={require('./assets/icon-search.png')} />
                     <Pressable
                         onPress={() => { assaRef.current.focus() }}
@@ -81,13 +98,21 @@ function TranslateInputBox({ setData, fetchedData }) {
                             }}
                             style={{ width: "100%" }}
                             ref={assaRef}
+                            autoCorrect={false}
+                            spellCheck={false}
                             onFocus={() => {
                                 setShowDropdown(true)
                                 setOptions(assaOptions)
-                                inputFieldRef.current = assaRef.current
+                                setFocusedInputPosition(inputPositions.assa)
+                                console.log(inputPositions.assa)
+                                focusedInputFieldRef.current = assaRef.current
                                 stateSetterRef.current = setAssa
+                                setShowResults(false)
                             }}
-                            onBlur={() => setShowDropdown(false)}
+                            onBlur={() => {
+                                setShowDropdown(false)
+                                setShowResults(true)
+                            }}
                         />
                     </Pressable>
                     {assa.length != "" && <ClearInputButton
@@ -100,42 +125,89 @@ function TranslateInputBox({ setData, fetchedData }) {
 
                 {/* SAFETRON */}
                 <Text style={styles.manufacturer}>Safetron</Text>
-                <View style={[styles.input, { width: "48%" }]}>
+                <View style={[styles.input, { width: "48%" }]}
+                    onLayout={(event) => {
+                        setInputPosition("safetron", event.nativeEvent.layout)
+                    }}>
                     <Image source={require('./assets/icon-search.png')} />
                     <Pressable
                         onPress={() => { safetronRef.current.focus() }}
                         hitSlop={{ top: 20, bottom: 20, left: 50 }}
                         style={{ width: "100%" }} >
                         <TextInput
-                            onChangeText={setSafetron}
+                            autoCorrect={false}
+                            spellCheck={false}
+                            onChangeText={(text) => {
+                                setSafetron(text)
+                                setInputString(text)
+                            }}
                             style={{ width: "100%" }}
                             ref={safetronRef}
+                            onFocus={() => {
+                                setShowDropdown(true)
+                                setOptions(safetronOptions)
+                                setFocusedInputPosition(inputPositions.safetron)
+                                console.log(inputPositions.safetron)
+                                focusedInputFieldRef.current = safetronRef.current
+                                stateSetterRef.current = setSafetron
+                                setShowResults(false)
+                            }}
+                            onBlur={() => {
+                                setShowDropdown(false)
+                                setShowResults(true)
+                            }}
                         />
                     </Pressable>
                     {safetron.length != "" &&
                         <ClearInputButton
                             textInputRef={safetronRef}
-                            clearInput={() => setSafetron("")} />}
+                            clearInput={() => {
+                                setSafetron("")
+                                setInputString("")
+                            }} />}
                 </View>
 
                 {/* STEPLOCK */}
                 <Text style={styles.manufacturer}>StepLock</Text>
-                <View style={[styles.input, { width: "48%" }]}>
+                <View style={[styles.input, { width: "48%" }]}
+                    onLayout={(event) => {
+                        setInputPosition("step", event.nativeEvent.layout)
+                    }}>
                     <Image source={require('./assets/icon-search.png')} />
                     <Pressable
                         onPress={() => { stepRef.current.focus() }}
                         hitSlop={{ top: 20, bottom: 20, left: 50 }}
                         style={{ width: "100%" }} >
                         <TextInput
-                            onChangeText={setStep}
+                            autoCorrect={false}
+                            spellCheck={false}
+                            onChangeText={(text) => {
+                                setStep(text)
+                                setInputString(text)
+                            }}
                             style={{ width: "100%" }}
                             ref={stepRef}
+                            onFocus={() => {
+                                setShowDropdown(true)
+                                setOptions(stepOptions)
+                                setFocusedInputPosition(inputPositions.step)
+                                focusedInputFieldRef.current = stepRef.current
+                                stateSetterRef.current = setStep
+                                setShowResults(false)
+                            }}
+                            onBlur={() => {
+                                setShowDropdown(false)
+                                setShowResults(true)
+                            }}
                         />
                     </Pressable>
                     {step.length != "" &&
                         <ClearInputButton
                             textInputRef={stepRef}
-                            clearInput={() => setStep("")} />}
+                            clearInput={() => {
+                                setStep("")
+                                setInputString("")
+                            }} />}
                 </View>
                 <Divider />
             </View>
