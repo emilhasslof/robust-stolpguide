@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Pressable, Image, Text } from 'react-native';
 import styles from './styles';
 import Divider from './Divider';
 import ClearInputButton from './ClearInputButton';
+import Dropdown from './Dropdown';
 
 // Renders input fields for search parameters and updates 
 // data array with search results
-function SearchInputBox({ setData, fetchedData }) {
+function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
     const [parameters, setParameters] = useState({
         höjd: "",
         bredd: "",
@@ -20,15 +21,18 @@ function SearchInputBox({ setData, fetchedData }) {
         setParameters({ ...parameters, [key]: value })
     }
 
+    function lowerCase(s) {
+        return s.toLowerCase()
+    }
     useEffect(() => {
         const filteredData = fetchedData.filter(plate => {
             return (
-                plate.höjd.includes(parameters.höjd.replace(/\D/g, "")) &&
-                plate.bredd.includes(parameters.bredd.replace(/\D/g, "")) &&
+                plate.karmprofil.map(lowerCase).some((item) => { return item.includes(parameters.karmprofil.toLowerCase()) }) &&
+                plate.höjd.includes(parameters.höjd.replace(/[^0-9.,]/g, "")) &&
+                plate.bredd.includes(parameters.bredd.replace(/[^0-9.,]/g, "")) &&
                 plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
-                plate.karmprofil.toLowerCase().includes(parameters.karmprofil.toLowerCase()) &&
-                plate.robust.toLowerCase().includes(parameters.modell.toLowerCase()) &&
-                plate.plösmått.includes(parameters.plösmått.replace(/\D/g, ""))
+                plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
+                plate.plösmått.includes(parameters.plösmått.replace(/[^0-9.,]/g, ""))
             )
         })
 
@@ -56,12 +60,64 @@ function SearchInputBox({ setData, fetchedData }) {
         inputFields[index].ref.current.focus()
     }
 
+    // state necessary for rendering dropdown
+    const [showDropdown, setShowDropdown] = useState(false)
+    const focusedInputFieldRef = useRef(null)
+    const [inputPositions, setInputPositions] = useState({
+        höjd: { x: 0, y: 0, width: 0, height: 0 },
+        bredd: { x: 0, y: 0, width: 0, height: 0 },
+        elslutbleck: { x: 0, y: 0, width: 0, height: 0 },
+        karmprofil: { x: 0, y: 0, width: 0, height: 0 },
+        modell: { x: 0, y: 0, width: 0, height: 0 },
+        plösmått: { x: 0, y: 0, width: 0, height: 0 }
+    })
+    const setInputPosition = (key, value) => {
+        setInputPositions({ ...inputPositions, [key]: value })
+    }
+    const [focusedInputPosition, setFocusedInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
+    const stateSetterRef = useRef()
+
+    // state for dropdown options
+    const optionsMap = {}
+    inputFields.forEach(field => {
+        optionsMap[field.name] = extractOptions(field.name)
+    })
+
+
+    function extractOptions(parameter) {
+        return fetchedData.map(robustPlate => robustPlate[parameter])
+            .flat()
+            .filter(item => item != "")
+            .filter((item, index, array) => array.indexOf(item) === index)
+            .sort()
+    }
+
+    const [options, setOptions] = useState([])
+    const [inputString, setInputString] = useState("")
+
+
     return (
-        <View>
-            <Divider />
+        <View style={{ height: showResults ? "auto" : 900 }}>
             <View style={styles.searchBox}>
+                <Divider />
+                {showDropdown && <Dropdown
+                    options={options}
+                    inputPosition={focusedInputPosition}
+                    inputString={inputString}
+                    choiceCallback={(item) => {
+                        setShowDropdown(false)
+                        focusedInputFieldRef.current.setNativeProps({ text: item })
+                        focusedInputFieldRef.current.blur()
+                        stateSetterRef.current(item)
+                    }} />
+                }
                 {inputFields.map((field, index) => (
-                    <View style={styles.input} key={index}>
+                    <View style={styles.input} key={index}
+                        onLayout={(event) => {
+                            const layout = event.nativeEvent.layout;
+                            setInputPosition(field.name, layout)
+                        }}
+                    >
                         <Image source={require('./assets/icon-search.png')} />
                         <Pressable
                             onPress={() => focusTextInput(index)}
@@ -70,17 +126,33 @@ function SearchInputBox({ setData, fetchedData }) {
                             <TextInput
                                 ref={field.ref}
                                 keyboardType={field.numeric ? 'numeric' : 'default'}
-                                onChangeText={(text) => setParameter(field.name, text)}
+                                spellCheck={false}
+                                autoCorrect={false}
+                                onChangeText={(text) => {
+                                    setParameter(field.name, text)
+                                    setInputString(text)
+                                }}
                                 value={parameters[field.name]}
                                 onEndEditing={(event) => {
                                     if (field.numeric && event.nativeEvent.text != "" && !event.nativeEvent.text.includes("mm")) {
-                                        console.log("onEndEditing")
-                                        console.log(event.nativeEvent.text)
                                         setParameter(field.name, event.nativeEvent.text + " mm")
                                     }
                                 }}
                                 placeholder={field.name === "modell" ?
                                     "Mont. stolpe" : field.name.charAt(0).toUpperCase() + field.name.slice(1)}
+                                onFocus={() => {
+                                    setShowDropdown(true)
+                                    setShowResults(false)
+                                    setFocusedInputPosition(inputPositions[field.name])
+                                    setInputString(parameters[field.name])
+                                    setOptions(optionsMap[field.name])
+                                    focusedInputFieldRef.current = field.ref.current
+                                    stateSetterRef.current = (item) => setParameter(field.name, item)
+                                }}
+                                onBlur={() => {
+                                    setShowDropdown(false)
+                                    setShowResults(true)
+                                }}
                             />
                         </Pressable>
                         {parameters[field.name] != "" && <ClearInputButton
@@ -89,8 +161,8 @@ function SearchInputBox({ setData, fetchedData }) {
                         }
                     </View>
                 ))}
+                <Divider />
             </View>
-            <Divider />
         </View >
     );
 }

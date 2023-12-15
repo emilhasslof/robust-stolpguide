@@ -22,9 +22,9 @@ export default fetchData = async () => {
     for (const tr of rows) {
         let elements = tr.childNodes
         data.push({
-            robust: elements[0].textContent,
+            modell: elements[0].textContent,
             plösmått: elements[1].textContent,
-            karmprofil: elements[2].textContent,
+            karmprofil: elements[2].textContent.split(','),
             höjd: elements[3].textContent,
             bredd: elements[4].textContent,
             elslutbleck: elements[5].textContent,
