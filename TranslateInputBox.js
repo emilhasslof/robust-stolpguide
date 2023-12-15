@@ -104,7 +104,6 @@ function TranslateInputBox({ setData, fetchedData, showResults, setShowResults }
                                 setShowDropdown(true)
                                 setOptions(assaOptions)
                                 setFocusedInputPosition(inputPositions.assa)
-                                console.log(inputPositions.assa)
                                 focusedInputFieldRef.current = assaRef.current
                                 stateSetterRef.current = setAssa
                                 setShowResults(false)
@@ -147,7 +146,6 @@ function TranslateInputBox({ setData, fetchedData, showResults, setShowResults }
                                 setShowDropdown(true)
                                 setOptions(safetronOptions)
                                 setFocusedInputPosition(inputPositions.safetron)
-                                console.log(inputPositions.safetron)
                                 focusedInputFieldRef.current = safetronRef.current
                                 stateSetterRef.current = setSafetron
                                 setShowResults(false)
