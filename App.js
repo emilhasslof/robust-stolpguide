@@ -24,6 +24,7 @@ export default function App() {
     setData(data)
     setFetching(false)
   }
+
   // Fetches data on first render
   useEffect(() => {
     fetchDataAndSetState()
