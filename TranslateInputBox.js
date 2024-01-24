@@ -51,7 +51,7 @@ function TranslateInputBox({ setData, fetchedData, showResults, setShowResults }
 
 
     useEffect(() => {
-        const filteredData = fetchedData.filter(plate => {
+        const matchingPlates = fetchedData.filter(plate => {
             return (
                 plate.assa.map(lowerCase).some((item) => { return item.includes(assa.toLowerCase()) }) &&
                 plate.step.map(lowerCase).some((item) => { return item.includes(step.toLowerCase()) }) &&
@@ -59,7 +59,16 @@ function TranslateInputBox({ setData, fetchedData, showResults, setShowResults }
             )
         })
 
-        setData(filteredData)
+        matchingPlates.forEach(plate => {
+            if (assa != "" && plate.assa.map(lowerCase).some((item) => { return item.includes(assa.toLowerCase()) })) {
+                plate.translationMatch = plate.assa;
+            } else if (step != "" && plate.step.map(lowerCase).some((item) => { return item.includes(step.toLowerCase()) })) {
+                plate.translationMatch = plate.step;
+            } else if (safetron != "" && plate.safetron.map(lowerCase).some((item) => { return item.includes(safetron.toLowerCase()) })) {
+                plate.translationMatch = plate.safetron;
+            }
+        });
+        setData(matchingPlates)
 
     }, [assa, step, safetron])
 

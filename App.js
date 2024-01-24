@@ -37,7 +37,8 @@ export default function App() {
         {<Image resizeMode="contain" style={{ width: "100%", marginBottom: -15 }} source={require('./assets/Logo.png')} />}
         <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
         {searchMode && <SearchInputBox setData={setData} fetchedData={fetchedData} showResults={showResults} setShowResults={setShowResults} />}
-        {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData} showResults={showResults} setShowResults={setShowResults} />}
+        {!searchMode && <TranslateInputBox setData={setData} fetchedData={fetchedData}
+          showResults={showResults} setShowResults={setShowResults} />}
         {fetching && <Text style={styles.loadingText}>Hämtar data...</Text>}
         {!fetching && showResults && <Text style={styles.resultText}>{data.length} Resultat</Text>}
       </View>
@@ -55,7 +56,7 @@ export default function App() {
           getItemLayout={(data, index) => (
             { length: faceplateHeight, offset: faceplateHeight * index, index })
           }
-          renderItem={({ item }) => <Faceplate modell={item.modell} blueprintUrl={item.bild} style={styles.faceplate} />
+          renderItem={({ item }) => <Faceplate modell={item.modell} blueprintUrl={item.bild} translationMatch={item.translationMatch} style={styles.faceplate} />
           }
         />
       </View>
