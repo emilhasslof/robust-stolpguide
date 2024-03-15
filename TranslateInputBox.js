@@ -73,8 +73,9 @@ function TranslateInputBox({ setData, fetchedData, showResults, setShowResults }
     }, [assa, step, safetron])
 
     return (
-        <View style={{ height: showResults ? "auto" : 900 }}>
-            <View style={styles.translateInputBox} >
+        <View>
+            <View style={[styles.searchBox, { height: showResults ? "auto" : 700 }]} >
+                {/*<View style={styles.searchBox} >*/}
                 <Divider />
                 {showDropdown && <Dropdown
                     options={options}
@@ -216,9 +217,9 @@ function TranslateInputBox({ setData, fetchedData, showResults, setShowResults }
                                 setInputString("")
                             }} />}
                 </View>
-                <Divider />
+                {showResults && <Divider />}
             </View>
-        </View>
+        </View >
     )
 }
 

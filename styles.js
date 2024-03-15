@@ -5,7 +5,8 @@ const colors = {
     divider: "#8FAECF",
     toggleBackground: "#D8E6F6",
     darkBlue: "#004691",
-    searchFieldBackground: "#EEF4FB",
+    // searchFieldBackground: "#EEF4FB",
+    searchFieldBackground: "#D8E6F6",
     faceplateBorder: "#ECC091",
     test: "#0000FF30",
 }
@@ -46,12 +47,6 @@ const styles = StyleSheet.create({
         fontSize: 35,
     },
     searchBox: {
-        backgroundColor: colors.searchFieldBackground,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-    },
-    translateInputBox: {
         backgroundColor: colors.searchFieldBackground,
         flexDirection: "row",
         flexWrap: "wrap",
