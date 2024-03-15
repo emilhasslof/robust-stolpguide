@@ -17,7 +17,7 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
         container: {
             position: "absolute",
             maxHeight: containerHeight,
-            overflow: "visible",
+            overflow: "hidden",
             width: inputPosition.width - 20,
             left: inputPosition.x + 10,
             top: inputPosition.y + inputPosition.height,

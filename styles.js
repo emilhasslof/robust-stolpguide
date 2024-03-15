@@ -5,8 +5,7 @@ const colors = {
     divider: "#8FAECF",
     toggleBackground: "#D8E6F6",
     darkBlue: "#004691",
-    // searchFieldBackground: "#EEF4FB",
-    searchFieldBackground: "#D8E6F6",
+    searchFieldBackground: "#EEF4FB",
     faceplateBorder: "#ECC091",
     test: "#0000FF30",
 }

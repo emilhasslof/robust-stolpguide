@@ -1,0 +1,5 @@
+Justera marginaler + storlek, "mindre handikappvänligt"
+Scrollbar lista med alternativ
+Filtrera tillgängliga alternativ vid sökning
+Visa matchande parametrar på sökresultatet
+Animera uppdaterat sökresultatet

@@ -48,7 +48,7 @@ export default function App() {
   faceplateHeight = Dimensions.get("window").height / 1.2 + 15; // height + marginBottom of Faceplate component
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ zIndex: 0, overflow: "visible" }}>
+      <View style={{ zIndex: 0 }}>
         <FlatList
           ListHeaderComponent={renderHeader(searchMode)}
           data={showResults ? data : []}
