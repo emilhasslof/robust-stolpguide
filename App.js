@@ -8,7 +8,6 @@ import SearchInputBox from "./SearchInputBox.js";
 import TranslateInputBox from "./TranslateInputBox.js";
 import ToggleMode from "./ToggleMode.js";
 import BottomBar from "./BottomBar.js";
-import Dropdown from "./Dropdown.js";
 
 export default function App() {
   const [searchMode, setSearchMode] = useState(true); // true = search, false = translate
