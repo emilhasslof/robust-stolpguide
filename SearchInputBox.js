@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, TextInput, Pressable, Image, Text } from 'react-native';
-import styles from './styles';
-import Divider from './Divider';
-import ClearInputButton from './ClearInputButton';
-import Dropdown from './Dropdown';
+import React, { useState, useEffect, useRef } from 'react'
+import { View, TextInput, Pressable, Image, Text } from 'react-native'
+import styles from './styles'
+import Divider from './Divider'
+import ClearInputButton from './ClearInputButton'
+import Dropdown from './Dropdown'
 
-// Renders input fields for search parameters and updates 
+// Renders input fields for search parameters and updates
 // data array with search results
-function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
+function SearchInputBox({ data, setData, fetchedData, showResults, setShowResults, flatListRef }) {
     const [parameters, setParameters] = useState({
-        höjd: "",
-        bredd: "",
-        elslutbleck: "",
-        karmprofil: "",
-        modell: "",
-        plösmått: "",
+        höjd: '',
+        bredd: '',
+        elslutbleck: '',
+        karmprofil: '',
+        modell: '',
+        plösmått: ''
     })
 
     const setParameter = (key, value) => {
@@ -25,21 +25,21 @@ function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
         return s.toLowerCase()
     }
     useEffect(() => {
-        const filteredData = fetchedData.filter(plate => {
+        const filteredData = fetchedData.filter((plate) => {
             return (
-                plate.karmprofil.map(lowerCase).some((item) => { return item.includes(parameters.karmprofil.toLowerCase()) }) &&
-                plate.höjd.includes(parameters.höjd.replace(/[^0-9.,]/g, "")) &&
-                plate.bredd.includes(parameters.bredd.replace(/[^0-9.,]/g, "")) &&
+                plate.karmprofil.map(lowerCase).some((item) => {
+                    return item.includes(parameters.karmprofil.toLowerCase())
+                }) &&
+                plate.höjd.includes(parameters.höjd.replace(/[^0-9.,]/g, '')) &&
+                plate.bredd.includes(parameters.bredd.replace(/[^0-9.,]/g, '')) &&
                 plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
                 plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
-                plate.plösmått.includes(parameters.plösmått.replace(/[^0-9.,]/g, ""))
+                plate.plösmått.includes(parameters.plösmått.replace(/[^0-9.,]/g, ''))
             )
         })
 
         setData(filteredData)
-
-    }, [parameters]);
-
+    }, [parameters])
 
     const inputFields = [
         { name: 'höjd', numeric: true },
@@ -47,11 +47,11 @@ function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
         { name: 'elslutbleck', numeric: false },
         { name: 'karmprofil', numeric: false },
         { name: 'modell', numeric: false },
-        { name: 'plösmått', numeric: true },
-    ];
+        { name: 'plösmått', numeric: true }
+    ]
 
     // Need a reference for each field to be able to focus it
-    inputFields.forEach(field => {
+    inputFields.forEach((field) => {
         field.ref = React.createRef()
     })
 
@@ -79,42 +79,45 @@ function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
 
     // state for dropdown options
     const optionsMap = {}
-    inputFields.forEach(field => {
+    inputFields.forEach((field) => {
         optionsMap[field.name] = extractOptions(field.name)
     })
 
-
     function extractOptions(parameter) {
-        return fetchedData.map(robustPlate => robustPlate[parameter])
+        return fetchedData
+            .map((robustPlate) => robustPlate[parameter])
             .flat()
-            .filter(item => item != "")
+            .filter((item) => item != '')
             .filter((item, index, array) => array.indexOf(item) === index)
             .sort()
     }
 
     const [options, setOptions] = useState([])
-    const [inputString, setInputString] = useState("")
-
+    const [inputString, setInputString] = useState('')
 
     return (
-        <View style={{ height: showResults ? "auto" : 900 }}>
+        <View style={{ height: showResults ? 'auto' : 900 }}>
             <View style={styles.searchBox}>
                 <Divider />
-                {showDropdown && <Dropdown
-                    options={options}
-                    inputPosition={focusedInputPosition}
-                    inputString={inputString}
-                    choiceCallback={(item) => {
-                        setShowDropdown(false)
-                        focusedInputFieldRef.current.setNativeProps({ text: item })
-                        focusedInputFieldRef.current.blur()
-                        stateSetterRef.current(item)
-                    }} />
-                }
+                {showDropdown && (
+                    <Dropdown
+                        options={options}
+                        inputPosition={focusedInputPosition}
+                        inputString={inputString}
+                        choiceCallback={(item) => {
+                            setShowDropdown(false)
+                            focusedInputFieldRef.current.setNativeProps({ text: item })
+                            focusedInputFieldRef.current.blur()
+                            stateSetterRef.current(item)
+                        }}
+                    />
+                )}
                 {inputFields.map((field, index) => (
-                    <View style={styles.input} key={index}
+                    <View
+                        style={styles.input}
+                        key={index}
                         onLayout={(event) => {
-                            const layout = event.nativeEvent.layout;
+                            const layout = event.nativeEvent.layout
                             setInputPosition(field.name, layout)
                         }}
                     >
@@ -122,7 +125,8 @@ function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
                         <Pressable
                             onPress={() => focusTextInput(index)}
                             hitSlop={{ top: 20, bottom: 20, left: 50 }}
-                            style={{ width: "100%" }}>
+                            style={{ width: '100%' }}
+                        >
                             <TextInput
                                 ref={field.ref}
                                 keyboardType={field.numeric ? 'numeric' : 'default'}
@@ -134,12 +138,19 @@ function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
                                 }}
                                 value={parameters[field.name]}
                                 onEndEditing={(event) => {
-                                    if (field.numeric && event.nativeEvent.text != "" && !event.nativeEvent.text.includes("mm")) {
-                                        setParameter(field.name, event.nativeEvent.text + " mm")
+                                    if (
+                                        field.numeric &&
+                                        event.nativeEvent.text != '' &&
+                                        !event.nativeEvent.text.includes('mm')
+                                    ) {
+                                        setParameter(field.name, event.nativeEvent.text + ' mm')
                                     }
                                 }}
-                                placeholder={field.name === "modell" ?
-                                    "Mont. stolpe" : field.name.charAt(0).toUpperCase() + field.name.slice(1)}
+                                placeholder={
+                                    field.name === 'modell'
+                                        ? 'Mont. stolpe'
+                                        : field.name.charAt(0).toUpperCase() + field.name.slice(1)
+                                }
                                 onFocus={() => {
                                     setShowDropdown(true)
                                     setShowResults(false)
@@ -148,23 +159,31 @@ function SearchInputBox({ setData, fetchedData, showResults, setShowResults }) {
                                     setOptions(optionsMap[field.name])
                                     focusedInputFieldRef.current = field.ref.current
                                     stateSetterRef.current = (item) => setParameter(field.name, item)
+                                    flatListRef.current.scrollToOffset({ animated: true, offset: 200 })
                                 }}
                                 onBlur={() => {
                                     setShowDropdown(false)
                                     setShowResults(true)
+                                    if (data.length == fetchedData.length) {
+                                        flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+                                    }
                                 }}
                             />
                         </Pressable>
-                        {parameters[field.name] != "" && <ClearInputButton
-                            textInputRef={field.ref}
-                            clearInput={() => { setParameter(field.name, "") }} />
-                        }
+                        {parameters[field.name] != '' && (
+                            <ClearInputButton
+                                textInputRef={field.ref}
+                                clearInput={() => {
+                                    setParameter(field.name, '')
+                                }}
+                            />
+                        )}
                     </View>
                 ))}
                 <Divider />
             </View>
-        </View >
-    );
+        </View>
+    )
 }
 
-export default SearchInputBox;
+export default SearchInputBox

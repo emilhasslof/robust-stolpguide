@@ -1,12 +1,13 @@
-import { React, useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, FlatList, Pressable, Text, ScrollView } from 'react-native';
+import { React, useEffect, useState } from 'react'
+import { View, StyleSheet, Dimensions, Text } from 'react-native'
+import { TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 
 function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
     const [data, setData] = useState(options)
 
     // Listen for user input and update options to match it
     useEffect(() => {
-        setData(options.filter(option => option.toLowerCase().includes(inputString.toLowerCase())))
+        setData(options.filter((option) => option.toLowerCase().includes(inputString.toLowerCase())))
     }, [inputString])
 
     const handlePress = (item) => {
@@ -15,55 +16,51 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
     const containerHeight = Math.min(data.length * 30, 300)
     const styles = StyleSheet.create({
         container: {
-            position: "absolute",
+            position: 'absolute',
             maxHeight: containerHeight,
-            overflow: "hidden",
+            overflow: 'hidden',
             width: inputPosition.width - 20,
             left: inputPosition.x + 10,
             top: inputPosition.y + inputPosition.height,
-            backgroundColor: "white",
-            borderBlockColor: "black",
+            backgroundColor: 'white',
+            borderBlockColor: 'black',
             borderWidth: 1,
-            zIndex: 1,
+            zIndex: 1
         },
         flatlist: {
             flex: 1,
-            alignContent: "center",
+            alignContent: 'center'
         },
         text: {
             fontSize: 12,
-            textAlign: "center",
+            textAlign: 'center'
         },
         listItem: {
-            justifyContent: "center",
-            alignItems: "center",
-            width: "90%",
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '90%',
             height: 30,
-            marginHorizontal: "5%",
+            marginHorizontal: '5%'
         }
-
     })
 
     return (
         <View style={styles.container}>
-            <ScrollView nestedScrollEnabled={true}>
-                <FlatList
-                    style={styles.flatlist}
-                    data={data}
-                    horizontal={false}
-                    renderItem={({ item }) =>
-                        <Pressable
-                            onPress={() => handlePress(item)}>
-                            <View style={styles.listItem}>
-                                <Text style={styles.text}>{item}</Text>
-                            </View>
-                        </Pressable>}
-                    keyExtractor={item => item}
-                />
-            </ScrollView>
-        </View >
-    );
+            <FlatList
+                style={styles.flatlist}
+                data={data}
+                horizontal={false}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => handlePress(item)}>
+                        <View style={styles.listItem}>
+                            <Text style={styles.text}>{item}</Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+                keyExtractor={(item) => item}
+            />
+        </View>
+    )
 }
 
-
-export default Dropdown;
+export default Dropdown
