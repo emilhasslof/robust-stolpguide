@@ -148,9 +148,6 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                             onBlur={() => {
                                 setShowDropdown(false)
                                 setShowResults(true)
-                                if (data.length == fetchedData.length) {
-                                    flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
-                                }
                             }}
                         />
                     </Pressable>
@@ -202,7 +199,6 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                             onBlur={() => {
                                 setShowDropdown(false)
                                 setShowResults(true)
-                                flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
                             }}
                         />
                     </Pressable>
@@ -254,7 +250,6 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                             onBlur={() => {
                                 setShowDropdown(false)
                                 setShowResults(true)
-                                flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
                             }}
                         />
                     </Pressable>

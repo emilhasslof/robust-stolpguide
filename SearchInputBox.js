@@ -164,9 +164,6 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                                 onBlur={() => {
                                     setShowDropdown(false)
                                     setShowResults(true)
-                                    if (data.length == fetchedData.length) {
-                                        flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
-                                    }
                                 }}
                             />
                         </Pressable>

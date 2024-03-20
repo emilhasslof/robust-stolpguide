@@ -33,7 +33,7 @@ export default function App() {
     }, [])
 
     useEffect(() => {
-        if (showResults && data.length < 180 && data.length > 0) {
+        if (showResults && data.length < 180 && data.length > 0 && !searchMode) {
             flatListRef.current.scrollToOffset({
                 animated: true,
                 offset: 400
