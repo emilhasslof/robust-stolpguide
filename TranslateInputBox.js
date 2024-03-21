@@ -143,7 +143,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 focusedInputFieldRef.current = assaRef.current
                                 stateSetterRef.current = setAssa
                                 setShowResults(false)
-                                flatListRef.current.scrollToOffset({ animated: true, offset: 200 })
+                                flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                             }}
                             onBlur={() => {
                                 setShowDropdown(false)
@@ -194,7 +194,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 focusedInputFieldRef.current = safetronRef.current
                                 stateSetterRef.current = setSafetron
                                 setShowResults(false)
-                                flatListRef.current.scrollToOffset({ animated: true, offset: 200 })
+                                flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                             }}
                             onBlur={() => {
                                 setShowDropdown(false)
@@ -245,7 +245,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 focusedInputFieldRef.current = stepRef.current
                                 stateSetterRef.current = setStep
                                 setShowResults(false)
-                                flatListRef.current.scrollToOffset({ animated: true, offset: 200 })
+                                flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                             }}
                             onBlur={() => {
                                 setShowDropdown(false)

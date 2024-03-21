@@ -24,6 +24,7 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     function lowerCase(s) {
         return s.toLowerCase()
     }
+
     useEffect(() => {
         const filteredData = fetchedData.filter((plate) => {
             return (
@@ -78,13 +79,31 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     const stateSetterRef = useRef()
 
     // state for dropdown options
-    const optionsMap = {}
-    inputFields.forEach((field) => {
-        optionsMap[field.name] = extractOptions(field.name)
+    const [optionsMap, setOptionsMap] = useState(() => {
+        const initialMap = {}
+        inputFields.forEach((field) => {
+            initialMap[field.name] = extractOptions(field.name)
+        })
+        return initialMap
     })
 
+    useEffect(() => {
+        console.log('updating options')
+        map = {}
+        inputFields.forEach((field) => {
+            map[field.name] = extractOptions(field.name)
+        })
+        setOptionsMap(map)
+    }, [data])
+
     function extractOptions(parameter) {
-        return fetchedData
+        //console.log('extracting options for ' + parameter)
+        //console.log(parameters)
+        let parametersEmpty = Object.values(parameters).every((value) => value === '')
+        console.log('empty: ' + parametersEmpty)
+        console.log(data.length)
+        const source = parametersEmpty ? fetchedData : data
+        return source
             .map((robustPlate) => robustPlate[parameter])
             .flat()
             .filter((item) => item != '')
@@ -137,15 +156,6 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                                     setInputString(text)
                                 }}
                                 value={parameters[field.name]}
-                                onEndEditing={(event) => {
-                                    if (
-                                        field.numeric &&
-                                        event.nativeEvent.text != '' &&
-                                        !event.nativeEvent.text.includes('mm')
-                                    ) {
-                                        setParameter(field.name, event.nativeEvent.text + ' mm')
-                                    }
-                                }}
                                 placeholder={
                                     field.name === 'modell'
                                         ? 'Mont. stolpe'
@@ -159,7 +169,7 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                                     setOptions(optionsMap[field.name])
                                     focusedInputFieldRef.current = field.ref.current
                                     stateSetterRef.current = (item) => setParameter(field.name, item)
-                                    flatListRef.current.scrollToOffset({ animated: true, offset: 200 })
+                                    flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                                 }}
                                 onBlur={() => {
                                     setShowDropdown(false)

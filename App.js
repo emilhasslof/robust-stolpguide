@@ -41,17 +41,12 @@ export default function App() {
         }
     }, [showResults])
 
+    const width = Dimensions.get('window').width
     const renderHeader = (searchMode) => {
         return (
             <View style={{ marginTop: 25 }}>
                 <StatusBar style="auto" />
-                {
-                    <Image
-                        resizeMode="contain"
-                        style={{ width: '100%', marginBottom: -15 }}
-                        source={require('./assets/Logo.png')}
-                    />
-                }
+                {<Image resizeMode="contain" style={{ width: '100%' }} source={require('./assets/Logo.png')} />}
                 <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
                 {searchMode && (
                     <SearchInputBox
@@ -79,7 +74,7 @@ export default function App() {
         )
     }
 
-    faceplateHeight = Dimensions.get('window').height / 1.2 + 15 // height + marginBottom of Faceplate component
+    faceplateHeight = 550 + 15 // height + marginBottom of Faceplate component
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={{ zIndex: 0 }}>
