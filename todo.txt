@@ -1,5 +1,6 @@
 TODO:
 Visa matchande parametrar på sökresultatet
+Fixa text som hamnar utanför rutan
 
 DONE:
 Filtrera tillgängliga alternativ vid sökning
