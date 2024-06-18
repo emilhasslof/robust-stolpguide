@@ -132,7 +132,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 setAssa(text)
                                 setInputString(text)
                             }}
-                            style={{ width: '100%' }}
+                            style={{ width: '70%' }}
                             ref={assaRef}
                             autoCorrect={false}
                             spellCheck={false}

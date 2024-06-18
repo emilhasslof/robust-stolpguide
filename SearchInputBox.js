@@ -142,6 +142,7 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                             style={{ width: '100%' }}
                         >
                             <TextInput
+                                style={{ width: '70%' }}
                                 ref={field.ref}
                                 keyboardType={field.numeric ? 'numeric' : 'default'}
                                 spellCheck={false}
