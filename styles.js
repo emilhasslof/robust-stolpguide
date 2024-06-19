@@ -1,90 +1,89 @@
-import { StyleSheet, Dimensions } from "react-native";
-
+import { StyleSheet, Dimensions } from 'react-native'
 
 const colors = {
-    divider: "#8FAECF",
-    toggleBackground: "#D8E6F6",
-    darkBlue: "#004691",
-    searchFieldBackground: "#EEF4FB",
-    faceplateBorder: "#ECC091",
-    test: "#0000FF30",
+    divider: '#8FAECF',
+    toggleBackground: '#D8E6F6',
+    darkBlue: '#004691',
+    searchFieldBackground: '#EEF4FB',
+    faceplateBorder: '#ECC091',
+    test: '#0000FF30'
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: "100%",
-        backgroundColor: "#fff",
+        height: '100%',
+        backgroundColor: '#fff'
     },
     divider: {
-        width: "100%",
+        width: '100%',
         height: 2,
-        backgroundColor: colors.divider,
+        backgroundColor: colors.divider
     },
     bottomBar: {
-        position: "absolute",
+        position: 'absolute',
         bottom: 0,
-        width: Dimensions.get("window").width,
+        width: Dimensions.get('window').width,
         height: 10,
-        backgroundColor: colors.darkBlue,
+        backgroundColor: colors.darkBlue
     },
     faceplate: {
         borderColor: colors.faceplateBorder,
         borderWidth: 2,
         borderRadius: 10,
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: Dimensions.get("window").height / 1.2,
-        width: "90%",
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Dimensions.get('window').height / 1.2,
+        width: '90%',
         padding: 20,
-        alignSelf: "center",
-        margin: 15,
+        alignSelf: 'center',
+        margin: 15
     },
     model: {
         paddingTop: 50,
-        color: "black",
-        fontSize: 35,
+        color: 'black',
+        fontSize: 35
     },
     searchBox: {
         backgroundColor: colors.searchFieldBackground,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between'
     },
     input: {
-        backgroundColor: "white",
-        flexDirection: "row",
-        alignItems: "center",
-        width: "40%",
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '40%',
         borderRadius: 20,
         borderWidth: 2,
         padding: 8,
         marginHorizontal: '4%',
-        marginVertical: '2%',
+        marginVertical: '2%'
     },
     resultText: {
-        textAlign: "center",
+        textAlign: 'center',
         fontSize: 40,
-        fontWeight: "200",
+        fontWeight: '200',
         margin: 10,
-        marginBottom: 30,
+        marginBottom: 30
     },
     loadingText: {
-        textAlign: "left",
+        textAlign: 'left',
         fontSize: 40,
-        fontWeight: "200",
+        fontWeight: '200',
         margin: 10,
-        marginBottom: 30,
+        marginBottom: 30
     },
     manufacturer: {
-        textAlign: "left",
-        textAlignVertical: "center",
-        justifyContent: "center",
-        width: "40%",
+        textAlign: 'left',
+        textAlignVertical: 'center',
+        width: '40%',
         fontSize: 25,
-        fontWeight: "300",
-        marginLeft: "4%",
-    },
-});
+        fontWeight: '300',
+        marginLeft: '4%',
+        marginVertical: '3%'
+    }
+})
 
-export default styles;
+export default styles
