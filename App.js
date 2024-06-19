@@ -44,7 +44,7 @@ export default function App() {
     const width = Dimensions.get('window').width
     const renderHeader = (searchMode) => {
         return (
-            <View style={{ marginTop: 25 }}>
+            <View style={{ marginTop: 40 }}>
                 <StatusBar style="auto" />
                 {<Image resizeMode="contain" style={{ width: '100%' }} source={require('./assets/Logo.png')} />}
                 <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
