@@ -1,6 +1,7 @@
 TODO:
 Visa matchande parametrar på sökresultatet
-Fixa text som hamnar utanför rutan
+Fixa text som hamnar utanför rutan // fixad ios men inte android
+Rensa whitespace i stolpnamn från tabellen. exempel assa 930-15
 
 DONE:
 Filtrera tillgängliga alternativ vid sökning
