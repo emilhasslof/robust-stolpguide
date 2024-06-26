@@ -1,6 +1,4 @@
-
-import { parse } from 'node-html-parser';
-
+import { parse } from 'node-html-parser'
 
 export default fetchData = async () => {
     const res = await fetch('https://robust-se.com/translate-table-mobile-app/')
@@ -16,21 +14,21 @@ export default fetchData = async () => {
     bredd: "",
     elslutbleck: "",
     karmprofil: "",
-    modell: "", 
+    modell: "",
     plösmått: "",
     */
     for (const tr of rows) {
         let elements = tr.childNodes
         data.push({
-            modell: elements[0].textContent,
-            plösmått: elements[1].textContent,
-            karmprofil: elements[2].textContent.split(','),
-            höjd: elements[3].textContent,
-            bredd: elements[4].textContent,
+            modell: elements[0].textContent.trim(),
+            plösmått: elements[1].textContent.trim(),
+            karmprofil: elements[2].textContent.split(',').map((e) => e.trim()),
+            höjd: elements[3].textContent.trim(),
+            bredd: elements[4].textContent.trim(),
             elslutbleck: elements[5].textContent,
-            assa: elements[6].textContent.split(','),
-            safetron: elements[7].textContent.split(','),
-            step: elements[8].textContent.split(','),
+            assa: elements[6].textContent.split(',').map((e) => e.trim()),
+            safetron: elements[7].textContent.split(',').map((e) => e.trim()),
+            step: elements[8].textContent.split(',').map((e) => e.trim()),
             //'Ritning-pdf': elements[9]
             bild: elements[10].childNodes[0].childNodes[0].getAttribute('href')
         })
@@ -43,15 +41,13 @@ export default fetchData = async () => {
 //console.log(data[172])
 //console.log(data[173])
 
-
-
 /*
 for (const td of rows[173].childNodes) {
     console.log(count + ': ' + td.textContent)
     count += 1
 }
 The parsing is a bit strange, this code snippet prints:
-0: 
+0:
 1: TC30-15H
 2: 15 mm
 3: Vinklade stolpar
