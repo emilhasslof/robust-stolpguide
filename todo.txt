@@ -1,9 +1,10 @@
 TODO:
 Visa matchande parametrar på sökresultatet
 Fixa text som hamnar utanför rutan // fixad ios men inte android
-Rensa whitespace i stolpnamn från tabellen. exempel assa 930-15
 
 DONE:
+Korrekt sorterig av alternativ i drop-down
+Rensa whitespace i stolpnamn från tabellen. exempel assa 930-15
 Filtrera tillgängliga alternativ vid sökning
 Justera marginaler + storlek, "mindre handikappvänligt"
 Scrollbar lista med alternativ

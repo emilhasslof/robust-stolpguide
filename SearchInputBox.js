@@ -98,12 +98,20 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     function extractOptions(parameter) {
         let parametersEmpty = Object.values(parameters).every((value) => value === '')
         const source = parametersEmpty ? fetchedData : data
-        return source
+        result = source
             .map((robustPlate) => robustPlate[parameter])
             .flat()
             .filter((item) => item != '')
             .filter((item, index, array) => array.indexOf(item) === index)
             .sort()
+        if (parameterIsNumerical(parameter)) {
+            result = result.map((item) => item.replace(',', '.'))
+            result = result.sort((a, b) => parseFloat(a) - parseFloat(b))
+        }
+        return result
+    }
+    function parameterIsNumerical(parameter) {
+        return ['höjd', 'bredd', 'plösmått'].includes(parameter)
     }
 
     const [options, setOptions] = useState([])
