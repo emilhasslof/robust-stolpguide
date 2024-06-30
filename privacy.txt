@@ -1,0 +1,55 @@
+Privacy Policy for Stolpguide
+
+Effective Date: June 30, 2024
+
+1. Introduction
+
+Welcome to Stolpguide, a tool designed to assist locksmiths in finding the right strike plate for electric locks.
+This Privacy Policy explains how Stolpguide handles your information when you use our app. By using Stolpguide,
+you agree to the terms outlined in this Privacy Policy.
+
+2. Information We Do Not Collect
+
+Stolpguide is designed with your privacy in mind. We do not collect, store, or share any personal information from users.
+Specifically, Stolpguide does not collect the following information:
+
+    Personal identifiers (e.g., name, email address, phone number)
+    Location data
+    Device information
+    Usage data
+
+3. How Stolpguide Works
+
+Stolpguide operates entirely on your device. The app downloads information from a website to provide a list of strike plates for
+electric locks. The search queries you enter are processed locally on your device and are not transmitted, stored, or collected
+by Stolpguide.
+
+4. Third-Party Services
+
+Stolpguide may use third-party services to download information from the internet. However, these services are used solely to
+fetch data necessary for the app's functionality and do not involve the collection of user data.
+
+5. Security
+
+While Stolpguide does not collect personal information, we are committed to ensuring that any data downloaded to your device
+is handled securely. We implement appropriate security measures to protect the information processed by the app.
+
+6. Children's Privacy
+
+Stolpguide is not intended for use by children under the age of 13. We do not knowingly collect information from children.
+If you are a parent or guardian and believe that your child has used the app, please contact us so we can take appropriate action.
+
+7. Changes to This Privacy Policy
+
+We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date.
+We encourage you to review this Privacy Policy periodically to stay informed about how we protect your privacy.
+
+8. Contact Us
+
+If you have any questions or concerns about this Privacy Policy or Stolpguide's privacy practices, please contact us at:
+
+developer@robust-se.com
+
+9. Consent
+
+By using Stolpguide, you consent to this Privacy Policy.
