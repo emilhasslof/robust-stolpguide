@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, TextInput, Pressable, Image, Text } from 'react-native'
+import { View, TextInput, Pressable, Image, Text, Platform } from 'react-native'
 import styles from './styles'
 import Divider from './Divider'
 import ClearInputButton from './ClearInputButton'
@@ -77,6 +77,7 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     }
     const [focusedInputPosition, setFocusedInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
     const stateSetterRef = useRef()
+    const [isScrolling, setIsScrolling] = useState(false)
 
     // state for dropdown options
     const [optionsMap, setOptionsMap] = useState(() => {
@@ -127,11 +128,13 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                         inputPosition={focusedInputPosition}
                         inputString={inputString}
                         choiceCallback={(item) => {
-                            setShowDropdown(false)
                             focusedInputFieldRef.current.setNativeProps({ text: item })
                             focusedInputFieldRef.current.blur()
                             stateSetterRef.current(item)
+                            setShowDropdown(false)
+                            setShowResults(true)
                         }}
+                        setIsScrolling={setIsScrolling}
                     />
                 )}
                 {inputFields.map((field, index) => (
@@ -176,8 +179,12 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                                     flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                                 }}
                                 onBlur={() => {
-                                    setShowDropdown(false)
-                                    setShowResults(true)
+                                    if(!isScrolling) {
+                                        setShowDropdown(false)
+                                        setShowResults(true)
+                                    } else if(Platform.OS === 'ios') {
+                                        setTimeout(() => focusedInputFieldRef.current.focus(), 800)
+                                    }
                                 }}
                             />
                         </Pressable>

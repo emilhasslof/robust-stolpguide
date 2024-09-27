@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, TextInput, Pressable, Image, Text, TouchableOpacity, Modal, Dimensions } from 'react-native'
+import { View, TextInput, Pressable, Image, Text, Platform } from 'react-native'
 import styles from './styles'
 import Divider from './Divider'
 import ClearInputButton from './ClearInputButton'
@@ -33,6 +33,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
         setInputPositions({ ...inputPositions, [key]: value })
     }
     const [focusedInputPosition, setFocusedInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
+    const [isScrolling, setIsScrolling] = useState(false)
 
     // state for dropdown options
     const assaOptions = extractOptions('assa')
@@ -108,6 +109,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                             focusedInputFieldRef.current.blur()
                             stateSetterRef.current(item)
                         }}
+                        setIsScrolling={setIsScrolling}
                     />
                 )}
 
@@ -146,8 +148,12 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                             }}
                             onBlur={() => {
-                                setShowDropdown(false)
-                                setShowResults(true)
+                                if (!isScrolling) {
+                                    setShowDropdown(false)
+                                    setShowResults(true)
+                                } else if (Platform.OS === 'ios') {
+                                    setTimeout(() => focusedInputFieldRef.current.focus(), 800)
+                                }
                             }}
                         />
                     </Pressable>
@@ -197,8 +203,12 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                             }}
                             onBlur={() => {
-                                setShowDropdown(false)
-                                setShowResults(true)
+                                if (!isScrolling) {
+                                    setShowDropdown(false)
+                                    setShowResults(true)
+                                } else if (Platform.OS === 'ios') {
+                                    setTimeout(() => focusedInputFieldRef.current.focus(), 800)
+                                }
                             }}
                         />
                     </Pressable>
@@ -248,8 +258,12 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                             }}
                             onBlur={() => {
-                                setShowDropdown(false)
-                                setShowResults(true)
+                                if (!isScrolling) {
+                                    setShowDropdown(false)
+                                    setShowResults(true)
+                                } else if (Platform.OS === 'ios') {
+                                    setTimeout(() => focusedInputFieldRef.current.focus(), 800)
+                                }
                             }}
                         />
                     </Pressable>

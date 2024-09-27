@@ -2,7 +2,7 @@ import { React, useEffect, useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 
-function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
+function Dropdown({ options, inputPosition, inputString, choiceCallback, setIsScrolling}) {
     const [data, setData] = useState(options)
 
     // Listen for user input and update options to match it
@@ -11,6 +11,7 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
     }, [inputString])
 
     const handlePress = (item) => {
+        setIsScrolling(false)
         choiceCallback(item)
     }
     const containerHeight = Math.min(data.length * 30, 300)
@@ -51,13 +52,19 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
                 data={data}
                 horizontal={false}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handlePress(item)}>
+                    <TouchableOpacity onPress={() => {
+                        handlePress(item)}}>
                         <View style={styles.listItem}>
                             <Text style={styles.text}>{item}</Text>
                         </View>
                     </TouchableOpacity>
                 )}
                 keyExtractor={(item, index) => index.toString()}
+                onScrollBeginDrag={() => {
+                    setIsScrolling(true)}}
+                onMomentumScrollEnd={() => {
+                    setIsScrolling(false)}}
+                keyboardShouldPersistTaps='handled'
             />
         </View>
     )
