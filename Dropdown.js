@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react'
-import { View, StyleSheet, Dimensions, Text } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 
 function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
@@ -57,7 +57,7 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback }) {
                         </View>
                     </TouchableOpacity>
                 )}
-                keyExtractor={(item) => item}
+                keyExtractor={(item, index) => index.toString()}
             />
         </View>
     )
