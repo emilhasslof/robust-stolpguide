@@ -38,7 +38,7 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback, setIsSc
         },
         listItem: {
             justifyContent: 'center',
-            alignItems: 'left',
+            alignItems: 'flex-start',
             width: '90%',
             height: 30,
             marginHorizontal: '10%'
