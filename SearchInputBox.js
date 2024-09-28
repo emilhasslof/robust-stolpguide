@@ -179,10 +179,10 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                                     flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
                                 }}
                                 onBlur={() => {
-                                    if(!isScrolling) {
+                                    if (!isScrolling) {
                                         setShowDropdown(false)
                                         setShowResults(true)
-                                    } else if(Platform.OS === 'ios') {
+                                    } else if (Platform.OS === 'ios') {
                                         setTimeout(() => focusedInputFieldRef.current.focus(), 800)
                                     }
                                 }}
