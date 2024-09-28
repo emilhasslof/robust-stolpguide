@@ -31,11 +31,11 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                 plate.karmprofil.map(lowerCase).some((item) => {
                     return item.includes(parameters.karmprofil.toLowerCase())
                 }) &&
-                plate.höjd.includes(parameters.höjd.replace(/[^0-9.,]/g, '')) &&
-                plate.bredd.includes(parameters.bredd.replace(/[^0-9.,]/g, '')) &&
                 plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
                 plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
-                plate.plösmått.includes(parameters.plösmått.replace(/[^0-9.,]/g, ''))
+                (parameters.plösmått === '' ? true : plate.plösmått.replace(/[^0-9.,]/g, '') == (parameters.plösmått.replace(/[^0-9.,]/g, ''))) &&
+                (parameters.bredd === '' ? true : plate.bredd.replace(/[^0-9.,]/g, '') == (parameters.bredd.replace(/[^0-9.,]/g, ''))) &&
+                (parameters.höjd === '' ? true : plate.höjd.replace(/[^0-9.,]/g, '') == (parameters.höjd.replace(/[^0-9.,]/g, '')))
             )
         })
 

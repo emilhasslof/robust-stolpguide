@@ -38,10 +38,10 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback, setIsSc
         },
         listItem: {
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'left',
             width: '90%',
             height: 30,
-            marginHorizontal: '5%'
+            marginHorizontal: '10%'
         }
     })
 
@@ -51,15 +51,18 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback, setIsSc
                 style={styles.flatlist}
                 data={data}
                 horizontal={false}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => {
-                        handlePress(item)
-                    }}>
+                renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                        onPress={() => {
+                            handlePress(item)
+                        }}
+                        style={{ 'backgroundColor': index % 2 == 0 ? "#EEF4FB" : "white" }}>
                         <View style={styles.listItem}>
                             <Text style={styles.text}>{item}</Text>
                         </View>
                     </TouchableOpacity>
-                )}
+                )
+                }
                 keyExtractor={(item, index) => index.toString()}
                 onScrollBeginDrag={() => {
                     setIsScrolling(true)
@@ -69,7 +72,7 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback, setIsSc
                 }}
                 keyboardShouldPersistTaps='handled'
             />
-        </View>
+        </View >
     )
 }
 
