@@ -2,7 +2,7 @@
     "expo": {
         "name": "robust-stolpguide",
         "slug": "stolpguide",
-        "version": "1.0.2",
+        "version": "1.0.3",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "userInterfaceStyle": "light",
@@ -14,14 +14,16 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.emilhasslof.stolpguide"
+            "bundleIdentifier": "com.emilhasslof.stolpguide",
+            "buildNumber": "1.0.3"
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
             },
-            "package": "com.emilhasslof.stolpguide"
+            "package": "com.emilhasslof.stolpguide",
+            "versionCode": 4
         },
         "web": {
             "favicon": "./assets/favicon.png"
