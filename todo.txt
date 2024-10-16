@@ -1,6 +1,5 @@
 TODO:
 Visa matchande parametrar på sökresultatet
-Fixa text som hamnar utanför rutan // fixad ios men inte android
 
 DONE:
 Korrekt sorterig av alternativ i drop-down
