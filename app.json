@@ -1,8 +1,8 @@
 {
     "expo": {
-        "name": "Robust Stolpguide",
+        "name": "Stolpguiden",
         "slug": "stolpguide",
-        "version": "1.0.5",
+        "version": "1.0.6",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "userInterfaceStyle": "light",
@@ -15,7 +15,7 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.emilhasslof.stolpguide",
-            "buildNumber": "1.0.5"
+            "buildNumber": "1.0.6"
         },
         "android": {
             "adaptiveIcon": {
@@ -23,7 +23,7 @@
                 "backgroundColor": "#ffffff"
             },
             "package": "com.emilhasslof.stolpguide",
-            "versionCode": 6
+            "versionCode": 7
         },
         "web": {
             "favicon": "./assets/favicon.png"
