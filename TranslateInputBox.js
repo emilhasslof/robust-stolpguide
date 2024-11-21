@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { View, TextInput, Pressable, Image, Text, Platform } from 'react-native'
 import styles from './styles'
-import Divider from './Divider'
 import ClearInputButton from './ClearInputButton'
 import Dropdown from './Dropdown'
 
@@ -97,7 +96,6 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
         <View style={{ height: showResults ? 'auto' : 900 }}>
             <View style={styles.searchBox}>
                 {/*<View style={styles.searchBox} >*/}
-                <Divider />
                 {showDropdown && (
                     <Dropdown
                         options={options}
@@ -121,7 +119,13 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                         setInputPosition('assa', event.nativeEvent.layout)
                     }}
                 >
-                    <Image source={require('./assets/icon-search.png')} />
+                    <Image
+                        source={require('./assets/icon-search.png')}
+                        style={{
+                            marginRight: 5,
+                            height: 12,
+                            width: 12,
+                        }} />
                     <Pressable
                         onPress={() => {
                             assaRef.current.focus()
@@ -176,7 +180,13 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                         setInputPosition('safetron', event.nativeEvent.layout)
                     }}
                 >
-                    <Image source={require('./assets/icon-search.png')} />
+                    <Image
+                        source={require('./assets/icon-search.png')}
+                        style={{
+                            marginRight: 5,
+                            height: 12,
+                            width: 12,
+                        }} />
                     <Pressable
                         onPress={() => {
                             safetronRef.current.focus()
@@ -231,7 +241,13 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                         setInputPosition('step', event.nativeEvent.layout)
                     }}
                 >
-                    <Image source={require('./assets/icon-search.png')} />
+                    <Image
+                        source={require('./assets/icon-search.png')}
+                        style={{
+                            marginRight: 5,
+                            height: 12,
+                            width: 12,
+                        }} />
                     <Pressable
                         onPress={() => {
                             stepRef.current.focus()
@@ -277,7 +293,6 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                         />
                     )}
                 </View>
-                {<Divider />}
             </View>
         </View>
     )

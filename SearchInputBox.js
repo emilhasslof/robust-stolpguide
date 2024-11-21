@@ -121,7 +121,6 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     return (
         <View style={{ height: showResults ? 'auto' : 900 }}>
             <View style={styles.searchBox}>
-                <Divider />
                 {showDropdown && (
                     <Dropdown
                         options={options}
@@ -146,14 +145,26 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                             setInputPosition(field.name, layout)
                         }}
                     >
-                        <Image source={require('./assets/icon-search.png')} />
+                        <Image
+                            source={require('./assets/icon-search.png')}
+                            style={{
+                                marginRight: 5,
+                                height: 12,
+                                width: 12,
+                            }} />
                         <Pressable
                             onPress={() => focusTextInput(index)}
                             hitSlop={{ top: 20, bottom: 20, left: 50 }}
                             style={{ width: '100%' }}
                         >
                             <TextInput
-                                style={{ width: '70%' }}
+                                style={{
+                                    width: '70%',
+                                    fontWeight: 'bold',
+                                    fontSize: 12,
+                                    color: '#404F90'
+
+                                }}
                                 ref={field.ref}
                                 keyboardType={field.numeric ? 'numeric' : 'default'}
                                 spellCheck={false}
@@ -165,9 +176,10 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                                 value={parameters[field.name]}
                                 placeholder={
                                     field.name === 'modell'
-                                        ? 'Mont. stolpe'
+                                        ? 'Stolpe'
                                         : field.name.charAt(0).toUpperCase() + field.name.slice(1)
                                 }
+                                placeholderTextColor={'#9FA6C8'}
                                 onFocus={() => {
                                     setShowDropdown(true)
                                     setShowResults(false)
@@ -198,7 +210,6 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                         )}
                     </View>
                 ))}
-                <Divider />
             </View>
         </View>
     )

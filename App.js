@@ -44,9 +44,9 @@ export default function App() {
     const width = Dimensions.get('window').width
     const renderHeader = (searchMode) => {
         return (
-            <View style={{ marginTop: 40 }}>
-                <StatusBar style="auto" />
-                {<Image resizeMode="contain" style={{ width: '100%' }} source={require('./assets/Logo.png')} />}
+            <View style={styles.header}>
+                <StatusBar style="light" />
+                {<Image resizeMode="contain" style={styles.logo} source={require('./assets/logo.png')} />}
                 <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
                 {searchMode && (
                     <SearchInputBox
@@ -68,8 +68,12 @@ export default function App() {
                         flatListRef={flatListRef}
                     />
                 )}
-                {fetching && <Text style={styles.loadingText}>Hämtar data...</Text>}
-                {!fetching && showResults && <Text style={styles.resultText}>{data.length} Resultat</Text>}
+                {fetching && <View style={styles.resultTextContainer}><Text style={styles.loadingText}>Hämtar data...</Text></View>}
+                {!fetching && showResults && (
+                    <View style={styles.resultTextContainer}>
+                        <Text style={styles.resultText}>{data.length} Resultat</Text>
+                    </View>
+                )}
             </View>
         )
     }
@@ -77,7 +81,7 @@ export default function App() {
     faceplateHeight = 550 + 15 // height + marginBottom of Faceplate component
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <View style={{ zIndex: 0 }}>
+            <View style={{ zIndex: 0, backgroundColor: '#E4E4E3' }}>
                 <FlatList
                     ref={flatListRef}
                     ListHeaderComponent={renderHeader(searchMode)}

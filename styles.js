@@ -2,14 +2,24 @@ import { StyleSheet, Dimensions } from 'react-native'
 
 const colors = {
     divider: '#8FAECF',
-    toggleBackground: '#D8E6F6',
     darkBlue: '#004691',
-    searchFieldBackground: '#EEF4FB',
+    searchFieldBackground: '#E4E4E3',
     faceplateBorder: '#ECC091',
     test: '#0000FF30'
 }
 
 const styles = StyleSheet.create({
+    header: {
+        backgroundColor: colors.darkBlue,
+        marginTop: 0,
+    },
+    logo: {
+        width: '50%',
+        height: 50,
+        marginTop: 30,
+        marginLeft: '6%',
+        marginBottom: 10,
+    },
     container: {
         height: '100%',
         backgroundColor: '#fff'
@@ -25,19 +35,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: 10,
         backgroundColor: colors.darkBlue
-    },
-    faceplate: {
-        borderColor: colors.faceplateBorder,
-        borderWidth: 2,
-        borderRadius: 10,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: Dimensions.get('window').height / 1.2,
-        width: '90%',
-        padding: 20,
-        alignSelf: 'center',
-        margin: 15
     },
     model: {
         paddingTop: 50,
@@ -56,17 +53,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '40%',
         borderRadius: 20,
-        borderWidth: 2,
         padding: 8,
         marginHorizontal: '4%',
-        marginVertical: '2%'
+        marginVertical: '2%',
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 4,
+            height: 4
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+        elevation: 3
+    },
+    resultTextContainer: {
+        backgroundColor: colors.searchFieldBackground,
     },
     resultText: {
         textAlign: 'center',
-        fontSize: 40,
-        fontWeight: '200',
-        margin: 10,
-        marginBottom: 30
+        fontSize: 18,
+        fontWeight: '600',
+        letterSpacing: 2,
+        color: colors.darkBlue,
+        marginBottom: 10
     },
     loadingText: {
         textAlign: 'left',
@@ -76,11 +84,13 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     manufacturer: {
-        textAlign: 'left',
+        color: colors.darkBlue,
+        letterSpacing: 2,
+        textAlign: 'center',
         textAlignVertical: 'center',
         width: '40%',
-        fontSize: 25,
-        fontWeight: '300',
+        fontSize: 18,
+        fontWeight: '400',
         marginLeft: '4%',
         marginVertical: '3%'
     }
