@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darkBlue,
         marginTop: 0,
     },
+    headerFiller: {
+        backgroundColor: 'searchFieldBackground',
+    },
     logo: {
         width: '50%',
         height: 50,
