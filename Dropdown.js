@@ -34,6 +34,7 @@ function Dropdown({ options, inputPosition, inputString, choiceCallback, setIsSc
         },
         text: {
             fontSize: 12,
+            color: '#004691',
             textAlign: 'center'
         },
         listItem: {

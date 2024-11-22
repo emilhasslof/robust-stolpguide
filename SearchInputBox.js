@@ -119,7 +119,7 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     const [inputString, setInputString] = useState('')
 
     return (
-        <View style={{ height: showResults ? 'auto' : 900 }}>
+        <View style={{ height: showResults ? 'auto' : 900, backgroundColor: '#E4E4E3' }}>
             <View style={styles.searchBox}>
                 {showDropdown && (
                     <Dropdown

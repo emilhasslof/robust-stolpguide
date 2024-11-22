@@ -10,8 +10,8 @@ function ToggleMode({ setSearchMode, searchMode }) {
             }}
         >
             <ModeMarker searchMode={searchMode} />
-            <Text style={[styles.sök, { color: '#004691', letterSpacing: 2 }]}>Sök</Text>
-            <Text style={[styles.översätt, { color: '#004691', letterSpacing: 2 }]}>Översätt</Text>
+            <Text style={styles.sök}>Sök</Text>
+            <Text style={styles.översätt}>Översätt</Text>
         </Pressable>
     )
 }
@@ -35,6 +35,9 @@ const styles = StyleSheet.create({
     },
     sök: {
         textAlign: 'center',
+        color: '#004691',
+        letterSpacing: 2,
+        fontFamily: 'Poppins-Regular',
         fontWeight: 'bold',
         fontSize: 18,
         width: '50%',
@@ -42,6 +45,9 @@ const styles = StyleSheet.create({
     },
     översätt: {
         textAlign: 'center',
+        color: '#004691',
+        letterSpacing: 2,
+        fontFamily: 'Poppins-Regular',
         fontWeight: 'bold',
         fontSize: 18,
         width: '50%',

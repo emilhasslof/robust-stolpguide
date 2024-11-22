@@ -1,12 +1,13 @@
-import React from 'react'
-import { View, Text, Image, Dimensions } from 'react-native'
+import React from 'react';
+import { View, Text, Image } from 'react-native';
 
-function Faceplate({ modell, blueprintUrl }) {
-    const [imageHeight, setImageHeight] = React.useState(0)
+const Faceplate = React.memo(({ modell, blueprintUrl }) => {
+    const [imageHeight, setImageHeight] = React.useState(0);
 
     const handleImageLayout = (event) => {
-        setImageHeight(event.nativeEvent.layout.height)
-    }
+        setImageHeight(event.nativeEvent.layout.height);
+    };
+
     return (
         <View
             style={{
@@ -19,20 +20,21 @@ function Faceplate({ modell, blueprintUrl }) {
                 height: imageHeight,
                 padding: 5,
                 alignSelf: 'center',
-                marginBottom: 15
+                marginBottom: 15,
             }}
         >
             <Image
                 source={{ uri: blueprintUrl }}
                 style={{
                     height: 450,
-                    width: 250
+                    width: 250,
                 }}
                 resizeMode="cover"
                 onLayout={(event) => handleImageLayout(event)}
             />
         </View>
-    )
-}
+    );
+});
 
-export default Faceplate
+export default Faceplate;
+

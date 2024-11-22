@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, TextInput, Pressable, Image, Text, Platform } from 'react-native'
+import { View, TextInput, Pressable, Image, Text, StyleSheet } from 'react-native'
 import styles from './styles'
 import ClearInputButton from './ClearInputButton'
 import Dropdown from './Dropdown'
@@ -93,7 +93,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
     }, [assa, step, safetron])
 
     return (
-        <View style={{ height: showResults ? 'auto' : 900 }}>
+        <View style={{ height: showResults ? 'auto' : 900, backgroundColor: '#E4E4E3' }}>
             <View style={styles.searchBox}>
                 {/*<View style={styles.searchBox} >*/}
                 {showDropdown && (
@@ -114,7 +114,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                 {/* ASSA */}
                 <Text style={styles.manufacturer}>ASSA</Text>
                 <View
-                    style={[styles.input, { width: '48%' }]}
+                    style={[styles.input, { width: '40%', marginRight: '8%' }]}
                     onLayout={(event) => {
                         setInputPosition('assa', event.nativeEvent.layout)
                     }}
@@ -138,7 +138,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 setAssa(text)
                                 setInputString(text)
                             }}
-                            style={{ width: '70%' }}
+                            style={styles.choiceText}
                             ref={assaRef}
                             autoCorrect={false}
                             spellCheck={false}
@@ -175,7 +175,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                 {/* SAFETRON */}
                 <Text style={styles.manufacturer}>Safetron</Text>
                 <View
-                    style={[styles.input, { width: '48%' }]}
+                    style={[styles.input, { width: '40%', marginRight: '8%' }]}
                     onLayout={(event) => {
                         setInputPosition('safetron', event.nativeEvent.layout)
                     }}
@@ -201,7 +201,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 setSafetron(text)
                                 setInputString(text)
                             }}
-                            style={{ width: '100%' }}
+                            style={styles.choiceText}
                             ref={safetronRef}
                             onFocus={() => {
                                 setShowDropdown(true)
@@ -236,7 +236,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                 {/* STEPLOCK */}
                 <Text style={styles.manufacturer}>StepLock</Text>
                 <View
-                    style={[styles.input, { width: '48%' }]}
+                    style={[styles.input, { width: '40%', marginRight: '8%' }]}
                     onLayout={(event) => {
                         setInputPosition('step', event.nativeEvent.layout)
                     }}
@@ -262,7 +262,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
                                 setStep(text)
                                 setInputString(text)
                             }}
-                            style={{ width: '100%' }}
+                            style={styles.choiceText}
                             ref={stepRef}
                             onFocus={() => {
                                 setShowDropdown(true)

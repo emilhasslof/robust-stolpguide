@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar'
 import { Dimensions, Text, View, Image } from 'react-native'
 import { GestureHandlerRootView, FlatList } from 'react-native-gesture-handler'
 import React, { useState, useEffect, useRef } from 'react'
+import * as SplashScreen from 'expo-splash-screen';
 import styles from './styles'
 import fetchData from './fetchData.js'
 import Faceplate from './Faceplate.js'
@@ -19,13 +20,23 @@ export default function App() {
 
     const flatListRef = useRef(null)
 
-    // Fetches data from robust-se.com writes it to state
+
+    // Keep the splash screen visible while we fetch resources
+    SplashScreen.preventAutoHideAsync();
+
+
+    // Fetches data from robust-se.com writes it to state, hide splash when done
     const fetchDataAndSetState = async () => {
+        const startTime = Date.now()
         const data = await fetchData()
         setFetchedData(data)
         setData(data)
         setFetching(false)
+        const elapsedTime = Date.now() - startTime
+        await new Promise(resolve => setTimeout(resolve, 3000 - elapsedTime));
+        SplashScreen.hideAsync()
     }
+
 
     // Fetches data on first render
     useEffect(() => {
@@ -45,35 +56,38 @@ export default function App() {
     const renderHeader = (searchMode) => {
         return (
             <View style={styles.header}>
-                <StatusBar style="light" />
-                {<Image resizeMode="contain" style={styles.logo} source={require('./assets/logo.png')} />}
-                <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
-                {searchMode && (
-                    <SearchInputBox
-                        data={data}
-                        setData={setData}
-                        fetchedData={fetchedData}
-                        showResults={showResults}
-                        setShowResults={setShowResults}
-                        flatListRef={flatListRef}
-                    />
-                )}
-                {!searchMode && (
-                    <TranslateInputBox
-                        data={data}
-                        setData={setData}
-                        fetchedData={fetchedData}
-                        showResults={showResults}
-                        setShowResults={setShowResults}
-                        flatListRef={flatListRef}
-                    />
-                )}
-                {fetching && <View style={styles.resultTextContainer}><Text style={styles.loadingText}>Hämtar data...</Text></View>}
-                {!fetching && showResults && (
-                    <View style={styles.resultTextContainer}>
-                        <Text style={styles.resultText}>{data.length} Resultat</Text>
-                    </View>
-                )}
+                <View style={styles.headerTop}>
+                    <StatusBar style="light" />
+                    {<Image resizeMode="contain" style={styles.logo} source={require('./assets/logo.png')} />}
+                    <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
+                    {searchMode && (
+                        <SearchInputBox
+                            data={data}
+                            setData={setData}
+                            fetchedData={fetchedData}
+                            showResults={showResults}
+                            setShowResults={setShowResults}
+                            flatListRef={flatListRef}
+                        />
+                    )}
+                    {!searchMode && (
+                        <TranslateInputBox
+                            data={data}
+                            setData={setData}
+                            fetchedData={fetchedData}
+                            showResults={showResults}
+                            setShowResults={setShowResults}
+                            flatListRef={flatListRef}
+                        />
+                    )}
+                    {fetching && <View style={styles.resultTextContainer}><Text style={styles.resultText}>Hämtar data...</Text></View>}
+                    {!fetching && showResults && (
+                        <View style={styles.resultTextContainer}>
+                            <Text style={styles.resultText}>{data.length} Resultat</Text>
+                        </View>
+                    )}
+                </View>
+                {!showResults && <View style={styles.headerBottom}></View>}
             </View>
         )
     }

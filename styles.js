@@ -10,11 +10,15 @@ const colors = {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: colors.darkBlue,
+        backgroundColor: 'pink',
         marginTop: 0,
     },
-    headerFiller: {
-        backgroundColor: 'searchFieldBackground',
+    headerTop: {
+        backgroundColor: colors.darkBlue,
+    },
+    headerBottom: {
+        backgroundColor: 'red',
+        flex: 1,
     },
     logo: {
         width: '50%',
@@ -54,11 +58,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
+        height: 36,
         width: '40%',
         borderRadius: 20,
         padding: 8,
         marginHorizontal: '4%',
-        marginVertical: '2%',
+        marginTop: '4%',
         shadowColor: 'black',
         shadowOffset: {
             width: 4,
@@ -74,10 +79,11 @@ const styles = StyleSheet.create({
     resultText: {
         textAlign: 'center',
         fontSize: 18,
+        fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         letterSpacing: 2,
         color: colors.darkBlue,
-        marginBottom: 10
+        marginVertical: 10
     },
     loadingText: {
         textAlign: 'left',
@@ -88,14 +94,22 @@ const styles = StyleSheet.create({
     },
     manufacturer: {
         color: colors.darkBlue,
+        fontFamily: 'Popins-Regular',
         letterSpacing: 2,
         textAlign: 'center',
-        textAlignVertical: 'center',
         width: '40%',
         fontSize: 18,
-        fontWeight: '400',
+        fontWeight: '600',
         marginLeft: '4%',
-        marginVertical: '3%'
+        marginTop: '6%'
+
+    },
+
+    choiceText: {
+        width: '70%',
+        color: '#004691',
+        fontFamily: 'Poppins-Regular',
+        fontWeight: 'bold',
     }
 })
 
