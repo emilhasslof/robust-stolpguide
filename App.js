@@ -43,14 +43,6 @@ export default function App() {
         fetchDataAndSetState()
     }, [])
 
-    useEffect(() => {
-        if (showResults && data.length < 180 && data.length > 0 && !searchMode) {
-            flatListRef.current.scrollToOffset({
-                animated: true,
-                offset: 400
-            })
-        }
-    }, [showResults])
 
     const width = Dimensions.get('window').width
     const renderHeader = (searchMode) => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, TextInput, Pressable, Image, Text, StyleSheet } from 'react-native'
+import { View, TextInput, Pressable, Image, Text, StyleSheet, Platform } from 'react-native'
 import styles from './styles'
 import ClearInputButton from './ClearInputButton'
 import Dropdown from './Dropdown'

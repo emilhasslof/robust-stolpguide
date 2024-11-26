@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     logo: {
         width: '50%',
         height: 50,
-        marginTop: 30,
+        marginTop: 55,
         marginLeft: '6%',
-        marginBottom: 10,
+        marginBottom: 20,
     },
     container: {
         height: '100%',
@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     resultText: {
         textAlign: 'center',
         fontSize: 18,
-        fontFamily: 'Poppins-Regular',
         fontWeight: '600',
         letterSpacing: 2,
         color: colors.darkBlue,
@@ -94,7 +93,6 @@ const styles = StyleSheet.create({
     },
     manufacturer: {
         color: colors.darkBlue,
-        fontFamily: 'Popins-Regular',
         letterSpacing: 2,
         textAlign: 'center',
         width: '40%',
@@ -108,7 +106,6 @@ const styles = StyleSheet.create({
     choiceText: {
         width: '70%',
         color: '#004691',
-        fontFamily: 'Poppins-Regular',
         fontWeight: 'bold',
     }
 })
