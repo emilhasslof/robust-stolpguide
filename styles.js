@@ -16,10 +16,6 @@ const styles = StyleSheet.create({
     headerTop: {
         backgroundColor: colors.darkBlue,
     },
-    headerBottom: {
-        backgroundColor: 'red',
-        flex: 1,
-    },
     logo: {
         width: '50%',
         height: 50,
