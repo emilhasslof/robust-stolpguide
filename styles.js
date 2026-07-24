@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         marginBottom: 18,
     },
     fieldLabel: {
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: '800',
         letterSpacing: 1.5,
         textTransform: 'uppercase',
