@@ -89,7 +89,7 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     })
 
     useEffect(() => {
-        map = {}
+        const map = {}
         inputFields.forEach((field) => {
             map[field.name] = extractOptions(field.name)
         })
@@ -99,7 +99,7 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     function extractOptions(parameter) {
         let parametersEmpty = Object.values(parameters).every((value) => value === '')
         const source = parametersEmpty ? fetchedData : data
-        result = source
+        let result = source
             .map((robustPlate) => robustPlate[parameter])
             .flat()
             .filter((item) => item != '')

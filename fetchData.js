@@ -1,6 +1,6 @@
 import { parse } from 'node-html-parser'
 
-export default fetchData = async () => {
+const fetchData = async () => {
     const res = await fetch('https://robust-se.com/translate-table-mobile-app/')
     const raw = await res.text()
     const root = parse(raw)
@@ -35,6 +35,8 @@ export default fetchData = async () => {
     }
     return data
 }
+
+export default fetchData
 
 //console.log(data[0])
 //console.log(data[1])

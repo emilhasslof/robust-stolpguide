@@ -84,7 +84,7 @@ export default function App() {
         )
     }
 
-    faceplateHeight = 550 + 15 // height + marginBottom of Faceplate component
+    const faceplateHeight = 550 + 15 // height + marginBottom of Faceplate component
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <View style={{ zIndex: 0, backgroundColor: '#E4E4E3' }}>
