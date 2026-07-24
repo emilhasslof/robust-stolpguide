@@ -1,93 +1,25 @@
-import React, { useRef, useEffect } from 'react'
-import { View, Text, Pressable, Animated, Dimensions, StyleSheet } from 'react-native'
+import React from 'react'
+import { View, Text, Pressable } from 'react-native'
+import styles from './styles'
 
+// Square, high-contrast segmented control. Active segment fills brand blue.
 function ToggleMode({ setSearchMode, searchMode }) {
     return (
-        <Pressable
-            style={styles.toggleMode}
-            onPress={() => {
-                setSearchMode(!searchMode)
-            }}
-        >
-            <ModeMarker searchMode={searchMode} />
-            <Text style={styles.sök}>Sök</Text>
-            <Text style={styles.översätt}>Översätt</Text>
-        </Pressable>
+        <View style={styles.toggle}>
+            <Pressable
+                style={[styles.segment, searchMode && styles.segmentActive]}
+                onPress={() => setSearchMode(true)}
+            >
+                <Text style={[styles.segmentText, searchMode && styles.segmentTextActive]}>Sök</Text>
+            </Pressable>
+            <Pressable
+                style={[styles.segment, styles.segmentDivider, !searchMode && styles.segmentActive]}
+                onPress={() => setSearchMode(false)}
+            >
+                <Text style={[styles.segmentText, !searchMode && styles.segmentTextActive]}>Översätt</Text>
+            </Pressable>
+        </View>
     )
-}
-
-const styles = StyleSheet.create({
-    toggleMode: {
-        marginBottom: 30,
-        marginLeft: '10%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '80%',
-        height: Dimensions.get('window').height / 14,
-        borderRadius: 50,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4
-        },
-        backgroundColor: 'white'
-    },
-    sök: {
-        textAlign: 'center',
-        color: '#004691',
-        letterSpacing: 2,
-        fontWeight: 'bold',
-        fontSize: 18,
-        width: '50%',
-        zIndex: 1
-    },
-    översätt: {
-        textAlign: 'center',
-        color: '#004691',
-        letterSpacing: 2,
-        fontWeight: 'bold',
-        fontSize: 18,
-        width: '50%',
-        zIndex: 1
-    }
-})
-
-// Animated marker that indicates which mode is active
-function ModeMarker({ searchMode }) {
-    const markerPosition = useRef(new Animated.Value(0)).current
-    const markerWidth = Dimensions.get('window').width * 0.4
-    const markerHeight = '100%'
-    const markerStyle = {
-        position: 'absolute',
-        width: markerWidth,
-        height: markerHeight,
-        backgroundColor: '#ED9A43',
-        borderTopLeftRadius: searchMode ? 50 : 0,
-        borderBottomLeftRadius: searchMode ? 50 : 0,
-        borderTopRightRadius: searchMode ? 0 : 50,
-        borderBottomRightRadius: searchMode ? 0 : 50,
-        top: 0,
-        left: 0,
-        //shadow
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5 // for Android
-    }
-    const markerAnimation = Animated.timing(markerPosition, {
-        toValue: searchMode ? 0 : markerWidth,
-        duration: 200,
-        useNativeDriver: true
-    })
-    useEffect(() => {
-        markerAnimation.start()
-    }, [searchMode])
-    return <Animated.View style={[markerStyle, { transform: [{ translateX: markerPosition }] }]} />
 }
 
 export default ToggleMode

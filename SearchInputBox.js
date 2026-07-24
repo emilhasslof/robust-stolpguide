@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, TextInput, Pressable, Image, Text, Platform } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Pressable, Text } from 'react-native'
 import styles from './styles'
-import Divider from './Divider'
-import ClearInputButton from './ClearInputButton'
-import Dropdown from './Dropdown'
 
-// Renders input fields for search parameters and updates
-// data array with search results
-function SearchInputBox({ data, setData, fetchedData, showResults, setShowResults, flatListRef }) {
+// Search parameter fields (2-column labeled grid). Each field is a tap-target that
+// opens the shared picker overlay (owned by App); it never focuses a keyboard inline.
+function SearchInputBox({ data, setData, fetchedData, openPicker }) {
     const [parameters, setParameters] = useState({
         höjd: '',
         bredd: '',
@@ -18,19 +15,23 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
     })
 
     const setParameter = (key, value) => {
-        setParameters({ ...parameters, [key]: value })
+        setParameters((prev) => ({ ...prev, [key]: value }))
     }
 
-    function lowerCase(s) {
-        return s.toLowerCase()
+    // Does an array field satisfy the query? An empty query means "not filtering on
+    // this field", so it matches even when the post's array is empty (e.g. a post with
+    // no frame profile still shows up until you actually filter by karmprofil).
+    const matchesArray = (articles, query) => {
+        const q = query.toLowerCase()
+        if (q === '') return true
+        return articles.some((item) => item.toLowerCase().includes(q))
     }
 
+    // Filter the results whenever a parameter changes
     useEffect(() => {
         const filteredData = fetchedData.filter((plate) => {
             return (
-                plate.karmprofil.map(lowerCase).some((item) => {
-                    return item.includes(parameters.karmprofil.toLowerCase())
-                }) &&
+                matchesArray(plate.karmprofil, parameters.karmprofil) &&
                 plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
                 plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
                 (parameters.plösmått === '' ? true : plate.plösmått.replace(/[^0-9.,]/g, '') == (parameters.plösmått.replace(/[^0-9.,]/g, ''))) &&
@@ -38,66 +39,34 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
                 (parameters.höjd === '' ? true : plate.höjd.replace(/[^0-9.,]/g, '') == (parameters.höjd.replace(/[^0-9.,]/g, '')))
             )
         })
-
         setData(filteredData)
     }, [parameters])
 
     const inputFields = [
-        { name: 'höjd', numeric: true },
-        { name: 'bredd', numeric: true },
-        { name: 'elslutbleck', numeric: false },
-        { name: 'karmprofil', numeric: false },
-        { name: 'modell', numeric: false },
-        { name: 'plösmått', numeric: true }
+        { name: 'höjd', label: 'Höjd', numeric: true },
+        { name: 'bredd', label: 'Bredd', numeric: true },
+        { name: 'elslutbleck', label: 'Elslutbleck', numeric: false },
+        { name: 'karmprofil', label: 'Karmprofil', numeric: false },
+        { name: 'modell', label: 'Stolpe', numeric: false },
+        { name: 'plösmått', label: 'Plösmått', numeric: true }
     ]
 
-    // Need a reference for each field to be able to focus it
-    inputFields.forEach((field) => {
-        field.ref = React.createRef()
-    })
-
-    // Uses ref to focus the input field when the user clicks on the TouchableOpacity wrapper
-    const focusTextInput = (index) => {
-        inputFields[index].ref.current.focus()
-    }
-
-    // state necessary for rendering dropdown
-    const [showDropdown, setShowDropdown] = useState(false)
-    const focusedInputFieldRef = useRef(null)
-    const [inputPositions, setInputPositions] = useState({
-        höjd: { x: 0, y: 0, width: 0, height: 0 },
-        bredd: { x: 0, y: 0, width: 0, height: 0 },
-        elslutbleck: { x: 0, y: 0, width: 0, height: 0 },
-        karmprofil: { x: 0, y: 0, width: 0, height: 0 },
-        modell: { x: 0, y: 0, width: 0, height: 0 },
-        plösmått: { x: 0, y: 0, width: 0, height: 0 }
-    })
-    const setInputPosition = (key, value) => {
-        setInputPositions((prev) => ({ ...prev, [key]: value }))
-    }
-    const [focusedInputPosition, setFocusedInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
-    const stateSetterRef = useRef()
-    const [isScrolling, setIsScrolling] = useState(false)
-
-    // state for dropdown options
-    const [optionsMap, setOptionsMap] = useState(() => {
-        const initialMap = {}
-        inputFields.forEach((field) => {
-            initialMap[field.name] = extractOptions(field.name)
-        })
-        return initialMap
-    })
-
+    // Autocomplete options per field, recomputed as the result set narrows
+    const [optionsMap, setOptionsMap] = useState(() => buildOptionsMap())
     useEffect(() => {
+        setOptionsMap(buildOptionsMap())
+    }, [data])
+
+    function buildOptionsMap() {
         const map = {}
         inputFields.forEach((field) => {
             map[field.name] = extractOptions(field.name)
         })
-        setOptionsMap(map)
-    }, [data])
+        return map
+    }
 
     function extractOptions(parameter) {
-        let parametersEmpty = Object.values(parameters).every((value) => value === '')
+        const parametersEmpty = Object.values(parameters).every((value) => value === '')
         const source = parametersEmpty ? fetchedData : data
         let result = source
             .map((robustPlate) => robustPlate[parameter])
@@ -115,102 +84,46 @@ function SearchInputBox({ data, setData, fetchedData, showResults, setShowResult
         return ['höjd', 'bredd', 'plösmått'].includes(parameter)
     }
 
-    const [options, setOptions] = useState([])
-    const [inputString, setInputString] = useState('')
+    const openFor = (field) => {
+        openPicker({
+            label: field.label,
+            numeric: field.numeric,
+            options: optionsMap[field.name] || [],
+            query: parameters[field.name],
+            onQueryChange: (text) => setParameter(field.name, text),
+            onSelect: (item) => setParameter(field.name, item)
+        })
+    }
 
     return (
-        <View style={{ height: showResults ? 'auto' : 900, backgroundColor: '#E4E4E3' }}>
-            <View style={styles.searchBox}>
-                {showDropdown && (
-                    <Dropdown
-                        options={options}
-                        inputPosition={focusedInputPosition}
-                        inputString={inputString}
-                        choiceCallback={(item) => {
-                            focusedInputFieldRef.current.setNativeProps({ text: item })
-                            focusedInputFieldRef.current.blur()
-                            stateSetterRef.current(item)
-                            setShowDropdown(false)
-                            setShowResults(true)
-                        }}
-                        setIsScrolling={setIsScrolling}
-                    />
-                )}
-                {inputFields.map((field, index) => (
-                    <View
-                        style={styles.input}
-                        key={index}
-                        onLayout={(event) => {
-                            const layout = event.nativeEvent.layout
-                            setInputPosition(field.name, layout)
-                        }}
-                    >
-                        <Image
-                            source={require('./assets/icon-search.png')}
-                            style={{
-                                marginRight: 5,
-                                height: 12,
-                                width: 12,
-                            }} />
-                        <Pressable
-                            onPress={() => focusTextInput(index)}
-                            hitSlop={{ top: 20, bottom: 20, left: 50 }}
-                            style={{ width: '100%' }}
-                        >
-                            <TextInput
-                                style={{
-                                    width: '70%',
-                                    fontWeight: 'bold',
-                                    fontSize: 12,
-                                    color: '#404F90'
-
-                                }}
-                                ref={field.ref}
-                                keyboardType={field.numeric ? 'numeric' : 'default'}
-                                spellCheck={false}
-                                autoCorrect={false}
-                                onChangeText={(text) => {
-                                    setParameter(field.name, text)
-                                    setInputString(text)
-                                }}
-                                value={parameters[field.name]}
-                                placeholder={
-                                    field.name === 'modell'
-                                        ? 'Stolpe'
-                                        : field.name.charAt(0).toUpperCase() + field.name.slice(1)
-                                }
-                                placeholderTextColor={'#9FA6C8'}
-                                onFocus={() => {
-                                    setShowDropdown(true)
-                                    setShowResults(false)
-                                    setFocusedInputPosition(inputPositions[field.name])
-                                    setInputString(parameters[field.name])
-                                    setOptions(optionsMap[field.name])
-                                    focusedInputFieldRef.current = field.ref.current
-                                    stateSetterRef.current = (item) => setParameter(field.name, item)
-                                    flatListRef.current.scrollToOffset({ animated: true, offset: 150 })
-                                }}
-                                onBlur={() => {
-                                    if (!isScrolling) {
-                                        setShowDropdown(false)
-                                        setShowResults(true)
-                                    } else if (Platform.OS === 'ios') {
-                                        setTimeout(() => focusedInputFieldRef.current.focus(), 800)
-                                    }
-                                }}
-                            />
+        <View style={styles.searchBox}>
+            {inputFields.map((field) => {
+                const value = parameters[field.name]
+                return (
+                    <View style={styles.fieldWrap} key={field.name}>
+                        <Text style={styles.fieldLabel}>{field.label}</Text>
+                        <Pressable style={styles.field} onPress={() => openFor(field)}>
+                            <Text
+                                style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
+                                numberOfLines={1}
+                            >
+                                {value || '–'}
+                            </Text>
+                            {value ? (
+                                <Pressable
+                                    style={styles.fieldClear}
+                                    hitSlop={10}
+                                    onPress={() => setParameter(field.name, '')}
+                                >
+                                    <Text style={styles.fieldClearText}>✕</Text>
+                                </Pressable>
+                            ) : (
+                                <Text style={styles.chevron}>▾</Text>
+                            )}
                         </Pressable>
-                        {parameters[field.name] != '' && (
-                            <ClearInputButton
-                                textInputRef={field.ref}
-                                clearInput={() => {
-                                    setParameter(field.name, '')
-                                }}
-                            />
-                        )}
                     </View>
-                ))}
-            </View>
+                )
+            })}
         </View>
     )
 }

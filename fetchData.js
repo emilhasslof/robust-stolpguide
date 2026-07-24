@@ -19,10 +19,10 @@ const toFaceplate = (product) => {
         plösmått: asString(specs.plosmatt_mm),
         höjd: asString(specs.height_mm),
         bredd: asString(specs.width_mm),
-        // The old "karmprofil" field conflated post shape and frame profiles; preserve
-        // that by combining both. post_shape is present on every post, so this is never
-        // empty — an empty karmprofil array would drop the post from search results.
-        karmprofil: [...(specs.post_shape || []), ...(specs.karmprofil_names || [])],
+        // Frame profiles only (drives the "Karmprofil" filter). Posts without a frame
+        // profile get an empty array; the search filter treats an empty query as
+        // "match all", so those posts are not dropped from results.
+        karmprofil: specs.karmprofil_names || [],
         // Old "elslutbleck" was a single string; a post can now be compatible with
         // several series, so join them (empty for strike plates, which is fine).
         elslutbleck: (product.compatible_with_series_names || []).join(', '),
