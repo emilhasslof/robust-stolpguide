@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import * as SplashScreen from 'expo-splash-screen';
 import styles, { colors } from './styles'
 import fetchData from './fetchData.js'
-import Faceplate from './Faceplate.js'
+import Faceplate, { FACEPLATE_HEIGHT } from './Faceplate.js'
 import SearchInputBox from './SearchInputBox.js'
 import TranslateInputBox from './TranslateInputBox.js'
 import ToggleMode from './ToggleMode.js'
@@ -92,14 +92,10 @@ export default function App() {
         </View>
     )
 
-    const faceplateHeight = 550 + 15 // height + marginBottom of Faceplate component
-
     const renderFaceplate = ({ item }) => (
         <Faceplate
             modell={item.modell}
             blueprintUrl={item.bild}
-            translationMatch={item.translationMatch}
-            style={styles.faceplate}
         />
     )
 
@@ -114,8 +110,8 @@ export default function App() {
                     keyExtractor={(item, index) => `${item.modell}-${index}`}
                     renderItem={renderFaceplate}
                     getItemLayout={(d, index) => ({
-                        length: faceplateHeight,
-                        offset: faceplateHeight * index,
+                        length: FACEPLATE_HEIGHT,
+                        offset: FACEPLATE_HEIGHT * index,
                         index
                     })}
                 />

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 // Design tokens mirrored from the new Robust website (src/styles.css):
 // square corners, bold near-black borders, white fills, brand blue, high contrast.
 export const colors = {
-    bg: '#F5F5F5',
+    bg: '#F7EFE1', // warm cream (hint of the logo's orange) for contrast against white cards/fields
     surface: '#FFFFFF',
     ink: '#0F172B',        // primary text
     inkBorder: '#171717',  // bold borders (matches website controls)
