@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { View, Pressable, Text } from 'react-native'
 import styles from './styles'
 
+// Special Elslutbleck option: selecting it shows all mechanical strike plates.
+const MEKANISKA_SLUTBLECK = 'Mekaniska slutbleck'
+
 // Search parameter fields (2-column labeled grid). Each field is a tap-target that
 // opens the shared picker overlay (owned by App); it never focuses a keyboard inline.
 function SearchInputBox({ data, setData, fetchedData, openPicker }) {
@@ -32,7 +35,9 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
         const filteredData = fetchedData.filter((plate) => {
             return (
                 matchesArray(plate.karmprofil, parameters.karmprofil) &&
-                plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase()) &&
+                (parameters.elslutbleck === MEKANISKA_SLUTBLECK
+                    ? plate.product_type === 'mekaniskt_slutbleck'
+                    : plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase())) &&
                 plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
                 (parameters.plösmått === '' ? true : plate.plösmått.replace(/[^0-9.,]/g, '') == (parameters.plösmått.replace(/[^0-9.,]/g, ''))) &&
                 (parameters.bredd === '' ? true : plate.bredd.replace(/[^0-9.,]/g, '') == (parameters.bredd.replace(/[^0-9.,]/g, ''))) &&
@@ -77,6 +82,9 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
         if (parameterIsNumerical(parameter)) {
             result = result.map((item) => item.replace(',', '.'))
             result = result.sort((a, b) => parseFloat(a) - parseFloat(b))
+        }
+        if (parameter === 'elslutbleck') {
+            result = [...result, MEKANISKA_SLUTBLECK]
         }
         return result
     }

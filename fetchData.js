@@ -11,11 +11,24 @@ const SEARCHABLE_TYPES = ['montagestolpe', 'mekaniskt_slutbleck']
 
 const asString = (value) => (value === null || value === undefined ? '' : String(value))
 
+// Formats a list of series names in Swedish enumeration style, sharing the "-serien"
+// suffix: ["100-serien","300-serien","400-serien"] -> "100-, 300- och 400-serien".
+// Falls back to a plain join if the names don't all follow the "{x}-serien" pattern.
+const formatSeries = (names) => {
+    const list = names || []
+    if (list.length <= 1) return list.join(', ')
+    if (!list.every((n) => /-serien$/.test(n))) return list.join(', ')
+    const prefixes = list.map((n) => n.replace(/-serien$/, ''))
+    const last = prefixes[prefixes.length - 1]
+    return `${prefixes.slice(0, -1).join('-, ')}- och ${last}-serien`
+}
+
 // Maps one API product onto the exact shape the app's components already consume.
 const toFaceplate = (product) => {
     const specs = product.specs || {}
     return {
         modell: asString(product.article_no),
+        product_type: product.product_type,
         plösmått: asString(specs.plosmatt_mm),
         höjd: asString(specs.height_mm),
         bredd: asString(specs.width_mm),
@@ -23,9 +36,9 @@ const toFaceplate = (product) => {
         // profile get an empty array; the search filter treats an empty query as
         // "match all", so those posts are not dropped from results.
         karmprofil: specs.karmprofil_names || [],
-        // Old "elslutbleck" was a single string; a post can now be compatible with
-        // several series, so join them (empty for strike plates, which is fine).
-        elslutbleck: (product.compatible_with_series_names || []).join(', '),
+        // Compatible elslutbleck series, worded Swedish-style ("100-, 300- och
+        // 400-serien"). Empty for strike plates, which is fine.
+        elslutbleck: formatSeries(product.compatible_with_series_names),
         assa: product.corresponding_posts_assa || [],
         safetron: product.corresponding_posts_safetron || [],
         step: product.corresponding_posts_step || [],
