@@ -63,6 +63,8 @@ function OptionPicker({ visible, label, options, query, numeric, unit, onChangeQ
 
     const q = String(query || '').toLowerCase()
     const filtered = (options || []).filter((o) => String(o).toLowerCase().includes(q))
+    const firstItem = filtered.length > 0 ? filtered[0] : undefined
+    const selectFirst = () => { if (firstItem !== undefined) onSelect(firstItem) }
 
     return (
         <View style={styles.overlay} pointerEvents={visible ? 'auto' : 'none'}>
@@ -84,7 +86,10 @@ function OptionPicker({ visible, label, options, query, numeric, unit, onChangeQ
                             value={query}
                             onChangeText={onChangeQuery}
                             autoFocus
-                            keyboardType={numeric ? 'numeric' : 'default'}
+                            keyboardType={numeric ? (Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric') : 'default'}
+                            returnKeyType="done"
+                            onSubmitEditing={selectFirst}
+                            blurOnSubmit={false}
                             placeholder="Sök…"
                             placeholderTextColor={colors.inkSoft}
                             autoCorrect={false}
