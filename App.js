@@ -127,6 +127,7 @@ export default function App() {
                 options={picker?.options}
                 query={picker?.query ?? ''}
                 numeric={picker?.numeric}
+                unit={picker?.unit}
                 onChangeQuery={handleChangeQuery}
                 onSelect={handleSelect}
                 onClose={closePicker}

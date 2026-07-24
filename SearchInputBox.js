@@ -30,49 +30,54 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
         return articles.some((item) => item.toLowerCase().includes(q))
     }
 
+    const numMatch = (value, query) => {
+        if (query === '') return true
+        return value.replace(/[^0-9.,]/g, '') == query.replace(/[^0-9.,]/g, '')
+    }
+
+    // Whether a plate satisfies a set of parameter values.
+    const plateMatches = (plate, params) => (
+        matchesArray(plate.karmprofil, params.karmprofil) &&
+        (params.elslutbleck === MEKANISKA_SLUTBLECK
+            ? plate.product_type === 'mekaniskt_slutbleck'
+            : plate.elslutbleck.toLowerCase().includes(params.elslutbleck.toLowerCase())) &&
+        plate.modell.toLowerCase().includes(params.modell.toLowerCase()) &&
+        numMatch(plate.plösmått, params.plösmått) &&
+        numMatch(plate.bredd, params.bredd) &&
+        numMatch(plate.höjd, params.höjd)
+    )
+
     // Filter the results whenever a parameter changes
     useEffect(() => {
-        const filteredData = fetchedData.filter((plate) => {
-            return (
-                matchesArray(plate.karmprofil, parameters.karmprofil) &&
-                (parameters.elslutbleck === MEKANISKA_SLUTBLECK
-                    ? plate.product_type === 'mekaniskt_slutbleck'
-                    : plate.elslutbleck.toLowerCase().includes(parameters.elslutbleck.toLowerCase())) &&
-                plate.modell.toLowerCase().includes(parameters.modell.toLowerCase()) &&
-                (parameters.plösmått === '' ? true : plate.plösmått.replace(/[^0-9.,]/g, '') == (parameters.plösmått.replace(/[^0-9.,]/g, ''))) &&
-                (parameters.bredd === '' ? true : plate.bredd.replace(/[^0-9.,]/g, '') == (parameters.bredd.replace(/[^0-9.,]/g, ''))) &&
-                (parameters.höjd === '' ? true : plate.höjd.replace(/[^0-9.,]/g, '') == (parameters.höjd.replace(/[^0-9.,]/g, '')))
-            )
-        })
-        setData(filteredData)
-    }, [parameters])
+        setData(fetchedData.filter((plate) => plateMatches(plate, parameters)))
+    }, [parameters, fetchedData])
 
     const inputFields = [
-        { name: 'höjd', label: 'Höjd', numeric: true },
-        { name: 'bredd', label: 'Bredd', numeric: true },
+        { name: 'höjd', label: 'Höjd', numeric: true, unit: 'mm' },
+        { name: 'bredd', label: 'Bredd', numeric: true, unit: 'mm' },
         { name: 'elslutbleck', label: 'Elslutbleck', numeric: false },
         { name: 'karmprofil', label: 'Karmprofil', numeric: false },
         { name: 'modell', label: 'Stolpe', numeric: false },
-        { name: 'plösmått', label: 'Plösmått', numeric: true }
+        { name: 'plösmått', label: 'Plösmått', numeric: true, unit: 'mm' }
     ]
 
-    // Autocomplete options per field, recomputed as the result set narrows
-    const [optionsMap, setOptionsMap] = useState(() => buildOptionsMap())
+    // Faceted autocomplete options per field: each field's options reflect the OTHER
+    // active filters but not its own value, so opening a field that already has a value
+    // (or clearing it inside the picker) still shows the full set of choices.
+    const [optionsMap, setOptionsMap] = useState({})
     useEffect(() => {
-        setOptionsMap(buildOptionsMap())
-    }, [data])
-
-    function buildOptionsMap() {
         const map = {}
         inputFields.forEach((field) => {
             map[field.name] = extractOptions(field.name)
         })
-        return map
-    }
+        setOptionsMap(map)
+    }, [parameters, fetchedData])
 
     function extractOptions(parameter) {
-        const parametersEmpty = Object.values(parameters).every((value) => value === '')
-        const source = parametersEmpty ? fetchedData : data
+        // Ignore this field's own value so its option list isn't narrowed to just the
+        // currently-selected value.
+        const otherParams = { ...parameters, [parameter]: '' }
+        const source = fetchedData.filter((plate) => plateMatches(plate, otherParams))
         let result = source
             .map((robustPlate) => robustPlate[parameter])
             .flat()
@@ -98,6 +103,7 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
             numeric: field.numeric,
             options: optionsMap[field.name] || [],
             query: parameters[field.name],
+            unit: field.unit,
             onQueryChange: (text) => setParameter(field.name, text),
             onSelect: (item) => setParameter(field.name, item)
         })
@@ -115,7 +121,7 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
                                 style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
                                 numberOfLines={1}
                             >
-                                {value || '–'}
+                                {value ? (field.unit ? `${value} ${field.unit}` : value) : '–'}
                             </Text>
                             {value ? (
                                 <Pressable

@@ -221,15 +221,33 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: colors.line,
     },
-    modalSearchInput: {
+    modalSearchRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
         height: 52,
         borderWidth: 2,
         borderColor: colors.inkBorder,
-        paddingHorizontal: 16,
+        backgroundColor: colors.surface,
+        paddingLeft: 16,
+        paddingRight: 8,
+    },
+    modalSearchInput: {
+        flex: 1,
         fontSize: 18,
         fontWeight: '700',
         color: colors.ink,
-        backgroundColor: colors.surface,
+        paddingVertical: 0,
+    },
+    modalSearchClear: {
+        width: 32,
+        height: 32,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modalSearchClearText: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: colors.inkSoft,
     },
 
     // ---- Kept: used by BottomBar / Divider ----
