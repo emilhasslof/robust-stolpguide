@@ -110,6 +110,7 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
     }
 
     return (
+        <>
         <View style={styles.searchBox}>
             {inputFields.map((field) => {
                 const value = parameters[field.name]
@@ -139,6 +140,10 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
                 )
             })}
         </View>
+        <View style={styles.resultBar}>
+            <Text style={styles.resultText}>{data.length} Träffar</Text>
+        </View>
+        </>
     )
 }
 

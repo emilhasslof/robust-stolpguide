@@ -12,7 +12,13 @@ function TranslateInputBox({ data, setData, fetchedData, openPicker }) {
     const [values, setValues] = useState({ assa: '', safetron: '', step: '' })
 
     const setValue = (key, value) => {
-        setValues((prev) => ({ ...prev, [key]: value }))
+        // Only one competitor manufacturer can be active at a time: entering/selecting a
+        // value in one field clears the others (clearing a field just empties that one).
+        setValues((prev) =>
+            value === ''
+                ? { ...prev, [key]: value }
+                : { assa: '', safetron: '', step: '', [key]: value }
+        )
     }
 
     function extractOptions(manufacturer) {
@@ -71,7 +77,13 @@ function TranslateInputBox({ data, setData, fetchedData, openPicker }) {
         })
     }
 
+    const count = data.length
+    const noun = count === 1 ? 'montagestolpe' : 'montagestolpar'
+    const filled = fields.filter((f) => values[f.name].trim() !== '')
+    const competitor = filled.map((f) => `${f.label} ${values[f.name].trim()}`).join(' och ')
+
     return (
+        <>
         <View style={styles.searchBox}>
             {fields.map((field) => {
                 const value = values[field.name]
@@ -101,6 +113,16 @@ function TranslateInputBox({ data, setData, fetchedData, openPicker }) {
                 )
             })}
         </View>
+        <View style={styles.resultBar}>
+            {competitor ? (
+                <Text style={styles.resultText}>
+                    {count} {noun} motsvarar{'\n'}<Text style={[styles.resultText, styles.resultEmphasis]}>{competitor}</Text>
+                </Text>
+            ) : (
+                <Text style={styles.resultText}>{count} Träffar</Text>
+            )}
+        </View>
+        </>
     )
 }
 

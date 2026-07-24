@@ -83,11 +83,6 @@ export default function App() {
                         openPicker={openPicker}
                     />
                 )}
-                <View style={styles.resultBar}>
-                    <Text style={styles.resultText}>
-                        {fetching ? 'Hämtar data…' : `${data.length} Resultat`}
-                    </Text>
-                </View>
             </View>
         </View>
     )

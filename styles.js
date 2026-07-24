@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         color: colors.inkSoft,
     },
+    resultEmphasis: {
+        color: colors.brand,
+    },
 
     // ---- Dropdown / options list ----
     optionHeader: {
