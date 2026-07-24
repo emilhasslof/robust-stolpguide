@@ -29,7 +29,7 @@ function TranslateInputBox({ data, setData, fetchedData, showResults, setShowRes
         step: { x: 0, y: 0, width: 0, height: 0 }
     })
     const setInputPosition = (key, value) => {
-        setInputPositions({ ...inputPositions, [key]: value })
+        setInputPositions((prev) => ({ ...prev, [key]: value }))
     }
     const [focusedInputPosition, setFocusedInputPosition] = useState({ x: 0, y: 0, width: 0, height: 0 })
     const [isScrolling, setIsScrolling] = useState(false)
