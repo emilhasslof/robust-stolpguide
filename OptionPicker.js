@@ -37,6 +37,9 @@ function OptionPicker({ visible, label, options, query, numeric, unit, onChangeQ
                 Animated.timing(fade, { toValue: 1, duration: 260, useNativeDriver: true }),
             ]).start()
         } else {
+            // Dismiss the keyboard as the close begins so it animates down together with
+            // the sheet (Android otherwise keeps it up until unmount, which looks wonky).
+            Keyboard.dismiss()
             Animated.parallel([
                 Animated.timing(slide, { toValue: SCREEN_H, duration: 200, useNativeDriver: true }),
                 Animated.timing(fade, { toValue: 0, duration: 200, useNativeDriver: true }),
