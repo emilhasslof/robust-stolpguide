@@ -70,6 +70,7 @@ function TranslateInputBox({ data, setData, fetchedData, openPicker }) {
         openPicker({
             label: field.label,
             numeric: false,
+            symbols: true,
             options: extractOptions(field.name),
             query: values[field.name],
             onQueryChange: (text) => setValue(field.name, text),
