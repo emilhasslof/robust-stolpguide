@@ -196,7 +196,14 @@ const styles = StyleSheet.create({
         color: colors.inkSoft,
     },
 
-    // ---- Picker modal (overlay) ----
+    // ---- Picker overlay ----
+    overlay: {
+        position: 'absolute',
+        top: 0, left: 0, right: 0, bottom: 0,
+        justifyContent: 'flex-end',
+        zIndex: 100,
+        elevation: 100,
+    },
     modalBackdrop: {
         position: 'absolute',
         top: 0, left: 0, right: 0, bottom: 0,
