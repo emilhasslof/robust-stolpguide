@@ -9,7 +9,7 @@ const SCREEN_H = Dimensions.get('window').height
 // overlay focuses like any normal input. The search field sits at the top of the sheet
 // so the keyboard opens below the option list instead of covering it. The slide-up /
 // backdrop-fade is animated manually since we no longer get Modal's animationType.
-function OptionPicker({ visible, label, options, query, numeric, unit, onChangeQuery, onSelect, onClose }) {
+function OptionPicker({ visible, label, options, query, numeric, symbols, unit, onChangeQuery, onSelect, onClose }) {
     const inputRef = useRef(null)
     const [mounted, setMounted] = useState(visible)
     const slide = useRef(new Animated.Value(visible ? 0 : SCREEN_H)).current
@@ -89,7 +89,11 @@ function OptionPicker({ visible, label, options, query, numeric, unit, onChangeQ
                             value={query}
                             onChangeText={onChangeQuery}
                             autoFocus
-                            keyboardType={numeric ? (Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'numeric') : 'default'}
+                            keyboardType={
+                                Platform.OS === 'ios'
+                                    ? ((numeric || symbols) ? 'numbers-and-punctuation' : 'default')
+                                    : (numeric ? 'numeric' : 'default')
+                            }
                             returnKeyType="done"
                             onSubmitEditing={selectFirst}
                             blurOnSubmit={false}

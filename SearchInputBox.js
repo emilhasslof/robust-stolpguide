@@ -57,7 +57,7 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
         { name: 'bredd', label: 'Bredd', numeric: true, unit: 'mm' },
         { name: 'elslutbleck', label: 'Elslutbleck', numeric: false },
         { name: 'karmprofil', label: 'Karmprofil', numeric: false },
-        { name: 'modell', label: 'Stolpe', numeric: false },
+        { name: 'modell', label: 'Stolpe', numeric: false, symbols: true },
         { name: 'plösmått', label: 'Plösmått', numeric: true, unit: 'mm' }
     ]
 
@@ -101,6 +101,7 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
         openPicker({
             label: field.label,
             numeric: field.numeric,
+            symbols: field.symbols,
             options: optionsMap[field.name] || [],
             query: parameters[field.name],
             unit: field.unit,

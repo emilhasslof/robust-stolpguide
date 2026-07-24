@@ -118,6 +118,7 @@ export default function App() {
                 options={picker?.options}
                 query={picker?.query ?? ''}
                 numeric={picker?.numeric}
+                symbols={picker?.symbols}
                 unit={picker?.unit}
                 onChangeQuery={handleChangeQuery}
                 onSelect={handleSelect}
