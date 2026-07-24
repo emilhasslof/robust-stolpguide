@@ -23,6 +23,39 @@ const formatSeries = (names) => {
     return `${prefixes.slice(0, -1).join('-, ')}- och ${last}-serien`
 }
 
+// Product ordering — mirrors the website (loaders.ts compareArticleNo): sort by leading
+// letter prefix, then the first integer run numerically, then the remainder naturally.
+// E.g. S2 < S11 < S14 < S14-10 < SA1. Implemented in pure JS (no Intl) so the order is
+// deterministic across platforms; article numbers are ASCII, so this matches the
+// website's locale-based comparison exactly (verified against the live data).
+const naturalCompare = (a, b) => {
+    const ax = a.match(/\d+|\D+/g) ?? []
+    const bx = b.match(/\d+|\D+/g) ?? []
+    const n = Math.min(ax.length, bx.length)
+    for (let i = 0; i < n; i++) {
+        const as = ax[i]
+        const bs = bx[i]
+        if (/^\d/.test(as) && /^\d/.test(bs)) {
+            const d = Number(as) - Number(bs)
+            if (d !== 0) return d
+        } else if (as !== bs) {
+            return as < bs ? -1 : 1
+        }
+    }
+    return ax.length - bx.length
+}
+const compareArticleNo = (a, b) => {
+    const parse = (s) => {
+        const m = /^([^\d]*)(\d*)(.*)$/.exec(s) ?? ['', '', '', '']
+        return [m[1].toLowerCase(), m[2] === '' ? -1 : Number(m[2]), m[3].toLowerCase()]
+    }
+    const [pa, na, ra] = parse(a)
+    const [pb, nb, rb] = parse(b)
+    if (pa !== pb) return pa < pb ? -1 : 1
+    if (na !== nb) return na - nb
+    return naturalCompare(ra, rb)
+}
+
 // Maps one API product onto the exact shape the app's components already consume.
 const toFaceplate = (product) => {
     const specs = product.specs || {}
@@ -54,6 +87,7 @@ const fetchData = async () => {
     return (json.products || [])
         .filter((p) => SEARCHABLE_TYPES.includes(p.product_type))
         .map(toFaceplate)
+        .sort((a, b) => compareArticleNo(a.modell, b.modell))
 }
 
 export default fetchData
