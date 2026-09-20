@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/Splashscreen-robust.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#014691"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -41,6 +36,15 @@
     "owner": "emilhasslof",
     "plugins": [
       [
+        "expo-splash-screen",
+        {
+          "image": "./assets/Splashscreen-robust.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#014691",
+          "enableFullScreenImage_legacy": true
+        }
+      ],
+      [
         "expo-font",
         {
           "fonts": [
@@ -48,7 +52,8 @@
           ]
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "expo-status-bar"
     ]
   }
 }
