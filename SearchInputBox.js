@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { View, Pressable, Text } from 'react-native'
 import styles from './styles'
+import Chevron from './Chevron.js'
 
 // Special Elslutbleck option: selecting it shows all mechanical strike plates.
 const MEKANISKA_SLUTBLECK = 'Mekaniska slutbleck'
 
-// Search parameter fields (2-column labeled grid). Each field is a tap-target that
+// Search parameter fields (2-column card grid). Each card is a tap-target that
 // opens the shared picker overlay (owned by App); it never focuses a keyboard inline.
 function SearchInputBox({ data, setData, fetchedData, openPicker }) {
     const [parameters, setParameters] = useState({
@@ -117,25 +118,27 @@ function SearchInputBox({ data, setData, fetchedData, openPicker }) {
                 const value = parameters[field.name]
                 return (
                     <View style={styles.fieldWrap} key={field.name}>
-                        <Text style={styles.fieldLabel}>{field.label}</Text>
                         <Pressable style={styles.field} onPress={() => openFor(field)}>
-                            <Text
-                                style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
-                                numberOfLines={1}
-                            >
-                                {value ? (field.unit ? `${value} ${field.unit}` : value) : '–'}
-                            </Text>
-                            {value ? (
-                                <Pressable
-                                    style={styles.fieldClear}
-                                    hitSlop={10}
-                                    onPress={() => setParameter(field.name, '')}
+                            <Text style={styles.fieldLabel}>{field.label}</Text>
+                            <View style={styles.fieldRow}>
+                                <Text
+                                    style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
+                                    numberOfLines={1}
                                 >
-                                    <Text style={styles.fieldClearText}>✕</Text>
-                                </Pressable>
-                            ) : (
-                                <Text style={styles.chevron}>▾</Text>
-                            )}
+                                    {value ? (field.unit ? `${value} ${field.unit}` : value) : '–'}
+                                </Text>
+                                {value ? (
+                                    <Pressable
+                                        style={styles.fieldClear}
+                                        hitSlop={10}
+                                        onPress={() => setParameter(field.name, '')}
+                                    >
+                                        <Text style={styles.fieldClearText}>✕</Text>
+                                    </Pressable>
+                                ) : (
+                                    <View style={styles.chevron}><Chevron /></View>
+                                )}
+                            </View>
                         </Pressable>
                     </View>
                 )

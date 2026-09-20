@@ -1,64 +1,80 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 
-// Design tokens mirrored from the new Robust website (src/styles.css):
-// square corners, bold near-black borders, white fills, brand blue, high contrast.
+// Design tokens for the light Robust app design: soft blue-grey ground, white
+// rounded cards with a whisper of shadow, dark navy ink, brand blue accents.
 export const colors = {
-    bg: '#F7EFE1', // warm cream (hint of the logo's orange) for contrast against white cards/fields
+    bg: '#EEF2F8',         // light blue-grey page ground
     surface: '#FFFFFF',
-    ink: '#0F172B',        // primary text
-    inkBorder: '#171717',  // bold borders (matches website controls)
-    inkSoft: '#62748E',    // labels / secondary text
-    brand: '#013E8B',      // brand blue
-    brandDeep: '#01285C',
-    line: '#E2E8F0',       // subtle separators
+    track: '#E3E9F2',      // segmented toggle track / picker search field
+    ink: '#0F1F3D',        // primary text (dark navy)
+    inkSoft: '#4B5B75',    // secondary text / inactive segment
+    brand: '#0A4EA5',      // brand blue
+    brandDeep: '#083D82',
+    line: '#E4EAF2',       // hairline separators
     accent: '#ED9A43',
 }
+
+export const radius = {
+    pill: 999,
+    card: 24,
+    field: 18,
+    sheet: 28,
+}
+
+// Soft elevation shared by cards and fields
+export const shadow = Platform.select({
+    ios: {
+        shadowColor: '#0F1F3D',
+        shadowOpacity: 0.06,
+        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 4 },
+    },
+    android: { elevation: 2 },
+    default: {},
+})
 
 const styles = StyleSheet.create({
     // ---- Brand header ----
     brandBand: {
-        backgroundColor: colors.brand,
+        backgroundColor: colors.bg,
         paddingTop: 64,
-        paddingBottom: 26,
-        paddingHorizontal: 22,
+        paddingBottom: 18,
+        paddingHorizontal: 20,
     },
     logo: {
-        width: '58%',
+        width: '52%',
         height: 46,
+        alignSelf: 'flex-start',
     },
     body: {
         backgroundColor: colors.bg,
-        paddingTop: 22,
+        paddingTop: 6,
     },
 
     // ---- Segmented toggle (Sök / Översätt) ----
     toggle: {
         flexDirection: 'row',
-        marginHorizontal: 22,
-        marginBottom: 24,
-        borderWidth: 2,
-        borderColor: colors.inkBorder,
-        backgroundColor: colors.surface,
+        marginHorizontal: 20,
+        marginBottom: 20,
+        height: 56,
+        borderRadius: radius.pill,
+        backgroundColor: colors.track,
     },
     segment: {
         flex: 1,
-        height: 56,
+        borderRadius: radius.pill,
         alignItems: 'center',
         justifyContent: 'center',
     },
     segmentActive: {
         backgroundColor: colors.brand,
     },
-    segmentDivider: {
-        borderLeftWidth: 2,
-        borderLeftColor: colors.inkBorder,
-    },
     segmentText: {
         fontSize: 16,
         fontWeight: '800',
-        letterSpacing: 2,
+        letterSpacing: 3,
         textTransform: 'uppercase',
-        color: colors.ink,
+        color: colors.inkSoft,
     },
     segmentTextActive: {
         color: colors.surface,
@@ -69,40 +85,42 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        paddingHorizontal: 22,
+        paddingHorizontal: 20,
     },
     fieldWrap: {
         width: '48%',
-        marginBottom: 18,
+        marginBottom: 16,
     },
     fieldWrapFull: {
         width: '100%',
-        marginBottom: 18,
+        marginBottom: 16,
     },
     fieldLabel: {
-        fontSize: 13,
+        fontSize: 12,
         fontWeight: '800',
-        letterSpacing: 1.5,
+        letterSpacing: 2.5,
         textTransform: 'uppercase',
-        color: colors.inkSoft,
-        marginBottom: 8,
+        color: colors.ink,
+        marginBottom: 6,
     },
+    // The whole card is the tap-target: label on top, value + chevron below.
     field: {
+        backgroundColor: colors.surface,
+        borderRadius: radius.field,
+        paddingHorizontal: 18,
+        paddingTop: 16,
+        paddingBottom: 14,
+        ...shadow,
+    },
+    fieldRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: 58,
-        backgroundColor: colors.surface,
-        borderWidth: 2,
-        borderColor: colors.inkBorder,
-        paddingHorizontal: 16,
-    },
-    fieldFocused: {
-        borderColor: colors.brand,
+        height: 32,
     },
     fieldInput: {
         flex: 1,
-        fontSize: 18,
-        fontWeight: '700',
+        fontSize: 22,
+        fontWeight: '600',
         color: colors.ink,
         paddingVertical: 0,
         paddingRight: 22,
@@ -110,16 +128,16 @@ const styles = StyleSheet.create({
 
     // ---- Result count ----
     resultBar: {
-        paddingHorizontal: 22,
-        paddingTop: 4,
-        paddingBottom: 18,
+        paddingHorizontal: 20,
+        paddingTop: 6,
+        paddingBottom: 16,
     },
     resultText: {
-        fontSize: 14,
+        fontSize: 20,
         fontWeight: '800',
-        letterSpacing: 2,
+        letterSpacing: 3,
         textTransform: 'uppercase',
-        color: colors.inkSoft,
+        color: colors.ink,
     },
     resultEmphasis: {
         color: colors.brand,
@@ -130,36 +148,45 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: colors.ink,
-        paddingHorizontal: 22,
-        paddingVertical: 16,
+        backgroundColor: colors.surface,
+        paddingLeft: 24,
+        paddingRight: 16,
+        paddingTop: 22,
+        paddingBottom: 6,
     },
     optionHeaderText: {
-        color: colors.surface,
+        color: colors.ink,
         fontSize: 13,
         fontWeight: '800',
-        letterSpacing: 1.5,
+        letterSpacing: 2.5,
         textTransform: 'uppercase',
     },
+    optionHeaderCloseWrap: {
+        width: 40,
+        height: 40,
+        borderRadius: radius.pill,
+        backgroundColor: colors.track,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     optionHeaderClose: {
-        color: colors.surface,
-        fontSize: 22,
+        color: colors.ink,
+        fontSize: 16,
         fontWeight: '700',
-        paddingHorizontal: 8,
     },
     optionRow: {
-        paddingVertical: 20,
-        paddingHorizontal: 22,
+        paddingVertical: 18,
+        paddingHorizontal: 24,
         backgroundColor: colors.surface,
-        borderBottomWidth: 1,
+        borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: colors.line,
     },
     optionRowPressed: {
-        backgroundColor: '#E7EEF7',
+        backgroundColor: colors.bg,
     },
     optionText: {
         fontSize: 19,
-        fontWeight: '700',
+        fontWeight: '600',
         color: colors.ink,
     },
     optionEmptyText: {
@@ -171,32 +198,32 @@ const styles = StyleSheet.create({
     // ---- Field as a tap-target (opens the picker) ----
     fieldValueText: {
         flex: 1,
-        fontSize: 18,
-        fontWeight: '700',
+        fontSize: 22,
+        fontWeight: '600',
         color: colors.ink,
     },
     fieldPlaceholderText: {
         flex: 1,
-        fontSize: 18,
-        fontWeight: '700',
-        color: colors.inkSoft,
+        fontSize: 22,
+        fontWeight: '600',
+        color: colors.ink,
     },
     chevron: {
-        fontSize: 15,
-        color: colors.inkSoft,
-        marginLeft: 6,
+        marginLeft: 8,
     },
     fieldClear: {
-        marginLeft: 6,
-        width: 24,
-        height: 24,
+        marginLeft: 8,
+        width: 26,
+        height: 26,
+        borderRadius: radius.pill,
+        backgroundColor: colors.track,
         alignItems: 'center',
         justifyContent: 'center',
     },
     fieldClearText: {
-        fontSize: 16,
+        fontSize: 13,
         fontWeight: '700',
-        color: colors.inkSoft,
+        color: colors.ink,
     },
 
     // ---- Picker overlay ----
@@ -210,47 +237,50 @@ const styles = StyleSheet.create({
     modalBackdrop: {
         position: 'absolute',
         top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(2, 6, 24, 0.45)',
+        backgroundColor: 'rgba(15, 31, 61, 0.45)',
     },
     modalSheet: {
         height: '85%',
         backgroundColor: colors.surface,
-        borderTopWidth: 3,
-        borderColor: colors.inkBorder,
+        borderTopLeftRadius: radius.sheet,
+        borderTopRightRadius: radius.sheet,
+        overflow: 'hidden',
     },
     modalSearchWrap: {
         paddingHorizontal: 16,
-        paddingVertical: 14,
-        borderBottomWidth: 2,
+        paddingTop: 10,
+        paddingBottom: 14,
+        borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: colors.line,
     },
     modalSearchRow: {
         flexDirection: 'row',
         alignItems: 'center',
         height: 52,
-        borderWidth: 2,
-        borderColor: colors.inkBorder,
-        backgroundColor: colors.surface,
-        paddingLeft: 16,
-        paddingRight: 8,
+        borderRadius: radius.pill,
+        backgroundColor: colors.bg,
+        paddingLeft: 20,
+        paddingRight: 10,
     },
     modalSearchInput: {
         flex: 1,
         fontSize: 18,
-        fontWeight: '700',
+        fontWeight: '600',
         color: colors.ink,
         paddingVertical: 0,
     },
     modalSearchClear: {
         width: 32,
         height: 32,
+        borderRadius: radius.pill,
+        backgroundColor: colors.track,
         alignItems: 'center',
         justifyContent: 'center',
     },
     modalSearchClearText: {
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: '700',
-        color: colors.inkSoft,
+        color: colors.ink,
     },
 
     // ---- Kept: used by BottomBar / Divider ----
@@ -258,13 +288,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        height: 10,
-        backgroundColor: colors.brand,
+        height: 28,
+        backgroundColor: colors.surface,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderTopColor: colors.line,
     },
     divider: {
         width: '100%',
-        height: 2,
-        backgroundColor: '#8FAECF',
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: colors.line,
     },
 })
 
