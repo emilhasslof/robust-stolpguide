@@ -77,7 +77,7 @@ function OptionPicker({ visible, label, options, query, numeric, symbols, unit, 
             <Animated.View style={[styles.modalSheet, { transform: [{ translateY: slide }] }]}>
                 <View style={styles.optionHeader}>
                     <Text style={styles.optionHeaderText}>Välj {label}</Text>
-                    <Pressable onPress={onClose} hitSlop={12}>
+                    <Pressable style={styles.optionHeaderCloseWrap} onPress={onClose} hitSlop={12}>
                         <Text style={styles.optionHeaderClose}>✕</Text>
                     </Pressable>
                 </View>

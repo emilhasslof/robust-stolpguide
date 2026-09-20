@@ -63,8 +63,8 @@ export default function App() {
     const renderHeader = () => (
         <View>
             <View style={styles.brandBand}>
-                <StatusBar style="light" />
-                <Image resizeMode="contain" style={styles.logo} source={require('./assets/logo.png')} />
+                <StatusBar style="dark" />
+                <Image resizeMode="contain" style={styles.logo} source={require('./assets/logo-dark.png')} />
             </View>
             <View style={styles.body}>
                 <ToggleMode searchMode={searchMode} setSearchMode={setSearchMode} />
@@ -102,6 +102,7 @@ export default function App() {
                     ListHeaderComponent={renderHeader()}
                     data={data}
                     keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={{ paddingBottom: 44 }}
                     keyExtractor={(item, index) => `${item.modell}-${index}`}
                     renderItem={renderFaceplate}
                     getItemLayout={(d, index) => ({

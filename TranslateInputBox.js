@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Pressable, Text } from 'react-native'
 import styles from './styles'
+import Chevron from './Chevron.js'
 
 function lowerCase(s) {
     return s.toLowerCase()
@@ -90,25 +91,27 @@ function TranslateInputBox({ data, setData, fetchedData, openPicker }) {
                 const value = values[field.name]
                 return (
                     <View style={styles.fieldWrapFull} key={field.name}>
-                        <Text style={styles.fieldLabel}>{field.label}</Text>
                         <Pressable style={styles.field} onPress={() => openFor(field)}>
-                            <Text
-                                style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
-                                numberOfLines={1}
-                            >
-                                {value || '–'}
-                            </Text>
-                            {value ? (
-                                <Pressable
-                                    style={styles.fieldClear}
-                                    hitSlop={10}
-                                    onPress={() => setValue(field.name, '')}
+                            <Text style={styles.fieldLabel}>{field.label}</Text>
+                            <View style={styles.fieldRow}>
+                                <Text
+                                    style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
+                                    numberOfLines={1}
                                 >
-                                    <Text style={styles.fieldClearText}>✕</Text>
-                                </Pressable>
-                            ) : (
-                                <Text style={styles.chevron}>▾</Text>
-                            )}
+                                    {value || '–'}
+                                </Text>
+                                {value ? (
+                                    <Pressable
+                                        style={styles.fieldClear}
+                                        hitSlop={10}
+                                        onPress={() => setValue(field.name, '')}
+                                    >
+                                        <Text style={styles.fieldClearText}>✕</Text>
+                                    </Pressable>
+                                ) : (
+                                    <View style={styles.chevron}><Chevron /></View>
+                                )}
+                            </View>
                         </Pressable>
                     </View>
                 )
