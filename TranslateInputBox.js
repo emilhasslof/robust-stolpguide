@@ -92,14 +92,18 @@ function TranslateInputBox({ data, setData, fetchedData, openPicker }) {
                 return (
                     <View style={styles.fieldWrapFull} key={field.name}>
                         <Pressable style={styles.field} onPress={() => openFor(field)}>
-                            <Text style={styles.fieldLabel}>{field.label}</Text>
-                            <View style={styles.fieldRow}>
-                                <Text
-                                    style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
-                                    numberOfLines={1}
-                                >
-                                    {value || '–'}
-                                </Text>
+                            <View style={styles.fieldMain}>
+                                <Text style={styles.fieldLabel} numberOfLines={1}>{field.label}</Text>
+                                <View style={styles.fieldRow}>
+                                    <Text
+                                        style={value ? styles.fieldValueText : styles.fieldPlaceholderText}
+                                        numberOfLines={1}
+                                    >
+                                        {value || '–'}
+                                    </Text>
+                                </View>
+                            </View>
+                            <View style={styles.fieldSide}>
                                 {value ? (
                                     <Pressable
                                         style={styles.fieldClear}

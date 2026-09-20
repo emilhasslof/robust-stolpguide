@@ -16,6 +16,7 @@ export const colors = {
 
 export const radius = {
     pill: 999,
+    toggle: 18, // short sides keep a short straight run rather than a full pill
     card: 24,
     field: 18,
     sheet: 28,
@@ -57,12 +58,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         marginBottom: 20,
         height: 56,
-        borderRadius: radius.pill,
+        borderRadius: radius.toggle,
         backgroundColor: colors.track,
     },
     segment: {
         flex: 1,
-        borderRadius: radius.pill,
+        borderRadius: radius.toggle,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -96,26 +97,34 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     fieldLabel: {
-        fontSize: 12,
+        fontSize: 11,
         fontWeight: '800',
-        letterSpacing: 2.5,
+        letterSpacing: 2,
         textTransform: 'uppercase',
         color: colors.ink,
-        marginBottom: 6,
+        marginBottom: 2,
     },
     // The whole card is the tap-target: label on top, value + chevron below.
     field: {
         backgroundColor: colors.surface,
         borderRadius: radius.field,
         paddingHorizontal: 18,
-        paddingTop: 16,
-        paddingBottom: 14,
+        paddingTop: 11,
+        paddingBottom: 9,
         ...shadow,
     },
+    fieldMain: {},
     fieldRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: 32,
+        height: 26,
+        paddingRight: 30, // room for the floating chevron / clear button
+    },
+    // Chevron / clear button float over the right edge, centered on the whole card
+    fieldSide: {
+        position: 'absolute',
+        top: 0, bottom: 0, right: 16,
+        justifyContent: 'center',
     },
     fieldInput: {
         flex: 1,
@@ -198,21 +207,18 @@ const styles = StyleSheet.create({
     // ---- Field as a tap-target (opens the picker) ----
     fieldValueText: {
         flex: 1,
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: '600',
         color: colors.ink,
     },
     fieldPlaceholderText: {
         flex: 1,
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: '600',
         color: colors.ink,
     },
-    chevron: {
-        marginLeft: 8,
-    },
+    chevron: {},
     fieldClear: {
-        marginLeft: 8,
         width: 26,
         height: 26,
         borderRadius: radius.pill,
